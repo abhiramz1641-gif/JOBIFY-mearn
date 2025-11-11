@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+#idd {
+  background-color: #334ed6;
+  background-color: #A4B3FF;
+  background-color: #F8F9FF;
+  background-color: #E0E4FF;
+  background-color: #1E1E2F;
+  background-color: #d6effd;
+  background-color: #555770;
+  background-image: linear-gradient(135deg, #5771FF, #00C8FF);
+}
+
+#he {
+  font-family: "Montserrat", sans-serif;
+  /* font-weight: 800; */
+}
+
+#pa {
+  font-family: "Lato", sans-serif;
+}
+
+.fj {
+  background-image: linear-gradient(white, #E0E4FF, #d6effd, #d6effd, #E0E4FF, white);
+}
+
+#head {
+
+   /* backdrop-filter: blur(1px) saturate(172%);
+    -webkit-backdrop-filter: blur(1px) saturate(172%);
+    background-color: rgba(25, 34, 49, 0.46);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125); */
+
+    /* background: rgba(25, 193, 225, 0.1);
+border-radius: 40px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(2.4px);
+-webkit-backdrop-filter: blur(2.4px);
+border: 1px solid rgba(25, 193, 225, 0.14); */
+
+background: rgba(255, 255, 255, 0.15);
+border-radius: 20px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(7.8px);
+-webkit-backdrop-filter: blur(7.8px);
+
+}
+
