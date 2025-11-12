@@ -6,7 +6,7 @@ import Silk from '../Silk'
 const Landing = () => {
 
 
-  
+
 
   return (
     <div>
@@ -22,32 +22,86 @@ const Landing = () => {
         <div style={{ position: "relative", zIndex: 1, height: "660px" }} className=' w-full p-5 gap-10'>
           <Header />
           <div className=' p-2 sm:p-10 mt-20 flex flex-col items-center justify-center'>
-            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-6xl text-white text-center'>Change The Way You</h1>
-            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-6xl text-white text-center'>Find Your Next <span id='j' style={{ color: "" }} className=' text-5xl sm:text-8xl text-center'>Job</span></h1>
+            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-6xl text-white text-center'>Change The Way You</h1>
+            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-6xl text-white text-center'>Find Your Next <span id='j' style={{ color: "" }} className=' text-5xl sm:text-8xl text-center'>Job</span></h1>
             <br />
-            <p id='pa' className=' text-2xl font-medium text-white'>Finding work is no more a work.</p>
+            <p id='pa' className=' xs:text-lg sm:text-2xl font-medium text-white text-center'>Finding work is no more a work.</p>
             <br />
             <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' p-2 px-8 rounded w-fit text-white font-semibold shadow-2xl shadow-black'>Get Started</button>
           </div>
           {/* <div className=' flex items-center justify-center'>
             <img className=' p-5 md:p-10' src="./images/landingg.png" alt="" />
           </div> */}
-         
+
 
         </div>
       </div>
-      <div>
-        <marquee behavior="" className="border-t border-b border-gray-200" loop="infinite" direction="left">
-          <div className=' flex justify-evenly my-5 h-20'>
-            <img className=' p-2' src="./images/am.png" alt="" />
-            <img className=' p-2' src="./images/go.png" alt="" />
-            <img className=' p-2' src="./images/mic.png" alt="" />
-            <img className=' p-2' src="./images/sf.png" alt="" />
-            <img className=' p-2' src="./images/sl.png" alt="" />
+
+
+
+      {/* slider */}
+      <div className="overflow-hidden border-t border-b border-gray-200">
+        <div className="flex animate-scroll whitespace-nowrap py-5">
+          <div className="flex items-center justify-evenly gap-8 px-8">
+            <img className="h-20 p-2" src="./images/am.png" alt="" />
+            <img className="h-20 p-2" src="./images/go.png" alt="" />
+            <img className="h-20 p-2" src="./images/mic.png" alt="" />
+            <img className="h-20 p-2" src="./images/sf.png" alt="" />
+            <img className="h-20 p-2" src="./images/sl.png" alt="" />
           </div>
-        </marquee>
+
+          <div className="flex items-center justify-evenly gap-8 px-8">
+            <img className="h-20 p-2" src="./images/am.png" alt="" />
+            <img className="h-20 p-2" src="./images/go.png" alt="" />
+            <img className="h-20 p-2" src="./images/mic.png" alt="" />
+            <img className="h-20 p-2" src="./images/sf.png" alt="" />
+            <img className="h-20 p-2" src="./images/sl.png" alt="" />
+          </div>
+        </div>
       </div>
-      <div className='fj'>
+
+
+
+      {/* about us */}
+
+
+      <div>
+        <div id='about-us' className=' p-10'>
+          <h1 id='he' style={{ color: "#1E1E2F" }} className=' ps-3 md:ps-10 text-3xl font-bold'>About Jobify</h1>
+          <div className=' md:grid grid-cols-[2fr_1fr]'>
+            <div className=' flex items-center text-xl'>
+              <p id='pa' className=' px-10 py-5'>
+  
+                <span>
+                  At Jobify, we’re redefining the way people find and apply for jobs. Our mission is to bridge the gap between talent and opportunity through technology, data-driven insights, and a touch of personalization. Whether you’re a fresh graduate looking for your first job or an experienced professional aiming to level up your career, Jobify ensures that every match counts. <br />
+    
+                  Unlike traditional job portals, Jobify uses compatibility scoring, skill-based filtering, and real-time recruiter insights to connect you with roles that truly fit your profile. We believe that a great career journey starts with the right opportunity — and we’re here to make that happen faster and smarter.
+                </span> <br /><br />
+  
+                Join us today and be part of the new era of intelligent hiring.
+                Because at Jobify, your next opportunity isn’t just a click away — it’s the right one.</p>
+            </div>
+            <div className=' flex items-center justify-center'>
+              <img className=' p-5 md:p-10' src="./images/landingg.png" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* Featured jobs */}
+      <div id='featured-jobs' className='fj'>
         <div className=' p-3 md:p-10'>
           <h1 id='he' style={{ color: "#1E1E2F" }} className=' ps-3 md:ps-10 text-3xl font-bold'>Featured Jobs</h1>
           <div className=' px-2 md:px-8 my-10 grid md:grid-cols-2 lg:grid-cols-3 gap-14'>

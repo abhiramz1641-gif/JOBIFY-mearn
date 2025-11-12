@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@callstack/liquid-glass": "^0.6.0",
+    "@developer-hub/liquid-glass": "^1.2.3",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-brands-svg-icons": "^7.1.0",
@@ -23,7 +25,9 @@
     "motion": "^12.23.24",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-liquid-glass-card": "^1.1.2",
     "react-router-dom": "^7.9.5",
+    "react-scroll": "^1.9.3",
     "tailwindcss": "^4.1.17",
     "three": "^0.181.1"
   },
