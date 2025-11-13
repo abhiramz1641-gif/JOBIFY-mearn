@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import DarkVeil from '../components/DarkVeil'
 import { FluidTabs } from '../components/FluidTabs'
+import { Link } from 'react-router-dom'
 
 const LoginPage = () => {
 
 
     const [register, setregister] = useState(false)
-    const [user, setUser] = useState(0)
+    const [user, setUser] = useState(1)
 
 
     const handleTab = (tab) => {
@@ -67,11 +68,11 @@ const LoginPage = () => {
                             <div>
                                 {
                                     register ?
-                                        <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Job Seeker Account</button>
+                                        <Link to={'/userDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Job Seeker Account</button></Link>
 
                                         :
 
-                                        <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Job Seeker</button>
+                                        <Link to={'/userDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Job Seeker</button></Link>
 
                                 }
                             </div>

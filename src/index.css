@@ -17,6 +17,8 @@ html {
   background-color: #d6effd;
   background-color: #555770;
   background-image: linear-gradient(135deg, #5771FF, #00C8FF);
+  background-image: linear-gradient(135deg, #334ed6, #1E1E2F);
+  
 }
 
 #he {
@@ -62,6 +64,8 @@ html {
   -webkit-backdrop-filter: blur(2.5px);
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+
+
 
 
 
