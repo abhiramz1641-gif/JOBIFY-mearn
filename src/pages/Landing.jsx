@@ -30,11 +30,11 @@ const Landing = () => {
             rotation={0} />
         </div>
 
-        <div style={{ position: "relative", zIndex: 1, height: "660px" }} className=' w-full p-5 gap-10'>
+        <div style={{ position: "relative", zIndex: 1, height: "660px" }} className=' w-full md:p-5 gap-10'>
           <Header />
           <div className=' p-2 sm:p-10 mt-20 flex flex-col items-center justify-center'>
-            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-6xl text-white text-center'>Change The Way You</h1>
-            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-6xl text-white text-center'>Find Your Next <span id='j' style={{ color: "" }} className=' text-5xl sm:text-8xl text-center'>Job</span></h1>
+            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-7xl text-white text-center'>Change The Way You</h1>
+            <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-6xl text-white text-center'>Find Your Next <span id='j' style={{ color: "" }} className=' text-5xl sm:text-6xl md:text-8xl text-center'>Job</span></h1>
             <br />
             <p id='pa' className=' xs:text-lg sm:text-2xl font-medium text-white text-center'>Finding work is no more a work.</p>
             <br />

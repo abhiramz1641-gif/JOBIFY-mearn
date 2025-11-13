@@ -1,16 +1,19 @@
 import { Route, Routes } from "react-router-dom"
 import Landing from "./pages/Landing"
 import LoginPage from "./pages/LoginPage"
+import UserDashboard from "./user/pages/UserDashboard"
 
 
 function App() {
 
+
   return (
     <>
-    <Routes>
-      <Route path="/" element={<Landing/>}/>
-      <Route path="/login" element={<LoginPage/>}/>
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/userDashboard" element={<UserDashboard />} />
+      </Routes>
     </>
   )
 }

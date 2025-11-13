@@ -74,11 +74,11 @@ void main(){
 `;
 
 export default function DarkVeil({
-  hueShift = 0,
+  hueShift = 11,
   noiseIntensity = 0,
   scanlineIntensity = 0,
-  speed = 0.5,
-  scanlineFrequency = 0,
+  speed = 3,
+  scanlineFrequency = 0.5,
   warpAmount = 0,
   resolutionScale = 1
 }) {

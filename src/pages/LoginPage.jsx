@@ -32,10 +32,11 @@ const LoginPage = () => {
             <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
                 <DarkVeil />
             </div>
-            <div className=' px-5 w-full sm:w-2/3 md:w-1/2 lg:w-2/5' style={{ position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', }}>
-                <div className=' w-full glass-card border border-white p-8 sm:p-10 text-white flex flex-col'>
-                    <h1 className=' text-3xl font-bold mb-8'>Welcome</h1>
+            <div className=' px-5 w-full sm:w-2/3 md:w-2/3 lg:w-2/5' style={{ position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', }}>
+                <div className=' w-full glass-card border border-white p-7 sm:p-10 text-white flex flex-col flex-wrap'>
+                    <h1 id='he' className=' text-3xl font-bold mb-8'>Welcome to <span className='font-extrabold'>JOBIFY</span></h1>
 
+                    <h1 id='pa' className=' font-semibold mb-2'>How do you plan to use jobify?</h1>
                     <div className=' mb-5'>
                         <FluidTabs
                             tabs={["Job Seeker", "Employer", "Admin"]}
@@ -58,7 +59,7 @@ const LoginPage = () => {
                         </div>
                     }
 
-                    {!register && <h1 className=' text-end'>Forgot Password?</h1>}
+                    {!register && <h1 className=' text-end cursor-pointer hover:underline'>Forgot Password?</h1>}
 
 
                     {
