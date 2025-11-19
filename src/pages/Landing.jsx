@@ -23,9 +23,10 @@ const Landing = () => {
     <div>
       <div style={{ position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <Silk speed={6}
+          <Silk speed={7}
             scale={1}
-            color="#334ed6"
+            // color="#334ed6"
+            color="#5771FF"
             noiseIntensity={.5}
             rotation={0} />
         </div>
@@ -237,7 +238,7 @@ const Landing = () => {
       <div id='services' className=' my-10'>
         <div className=' md:px-40 px-10'>
           <h1 id='he' style={{ color: "#1E1E2F" }} className=' text-3xl font-bold text-center mb-10'>Our Services</h1>
-          <p id='pa' className=' text-center text-2xl'>At Jobify, we go beyond just connecting job seekers and employers — we build meaningful career pathways. Whether you're hunting for your dream job or searching for top talent, our services are designed to make the process smarter, faster, and more personal.</p>
+          <p id='pa' className=' text-center text-xl'>At Jobify, we go beyond just connecting job seekers and employers — we build meaningful career pathways. Whether you're hunting for your dream job or searching for top talent, our services are designed to make the process smarter, faster, and more personal.</p>
         </div>
 
         <div>
