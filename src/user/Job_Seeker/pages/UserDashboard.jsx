@@ -170,7 +170,7 @@ const UserDashboard = () => {
                                     <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                 </div>
                                 <div className=' mb-2'>
-                                    <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                 </div>
                             </div>
 
@@ -220,7 +220,7 @@ const UserDashboard = () => {
                                     <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                 </div>
                                 <div className=' mb-2'>
-                                    <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                 </div>
                             </div>
 
@@ -270,7 +270,7 @@ const UserDashboard = () => {
                                     <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                 </div>
                                 <div className=' mb-2'>
-                                    <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                 </div>
                             </div>
 
