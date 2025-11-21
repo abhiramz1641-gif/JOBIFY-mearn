@@ -7,10 +7,15 @@ import AnimatedHamburgerButton from '../components/AnimatedHamburgerButton'
 import SidebarUser from '../components/SidebarUser'
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom'
+import ProfileEdit from '../components/ProfileEdit'
 
 const UserDashboard = () => {
 
+
+
     const value = 75
+
+    const [edit, setEdit] = useState(false)
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -42,6 +47,19 @@ const UserDashboard = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+
+            {/* edit modal */}
+            {edit &&
+                <div id='modal' className='absolute inset-0  items-center flex justify-center '>
+
+                    <ProfileEdit setEdit={setEdit} />
+
+                </div>
+
+            }
+
+
+            {/* sidebar in below md size screen */}
             <AnimatePresence>
                 {
                     medMenyOpen &&
@@ -56,13 +74,16 @@ const UserDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarUser />
+                        <SidebarUser setEdit={setEdit} />
                     </motion.div>
                 }
             </AnimatePresence>
 
+            {/* header componentr */}
             <UserHeader />
 
+
+            {/* full part under header  */}
             <motion.div layout
                 animate={{
                     gridTemplateColumns: menuOpen ? "1fr 3fr" : "0fr 1fr",
@@ -74,6 +95,7 @@ const UserDashboard = () => {
                 }}
                 className=' w-full h-full md:grid px-3 sm:px-5'>
 
+                {/* sidebar above md size */}
                 <motion.div
                     layout
                     initial={false}
@@ -97,7 +119,7 @@ const UserDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarUser />
+                                <SidebarUser setEdit={setEdit}/>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -133,6 +155,7 @@ const UserDashboard = () => {
                         </div>
                     </div>
 
+                    {/* cards section dashboard */}
                     <div className=' grid md:grid-cols-3 px-3 sm:px-10 gap-10'>
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Application Sent</p>
@@ -161,6 +184,8 @@ const UserDashboard = () => {
                         <h1 id='he' className=' font-semibold text-2xl'>Recent Job Listing</h1>
                     </div>
 
+
+                    {/* recent 3 jobs posted */}
                     <div className=' grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-3 sm:px-10'>
 
                         <div className='border border-blue-400 rounded-xl h-full p-5'>
@@ -313,7 +338,7 @@ const UserDashboard = () => {
                                 </div>
                             </div>
                         </div>
-                        
+
 
                     </div>
 

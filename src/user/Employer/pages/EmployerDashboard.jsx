@@ -6,11 +6,12 @@ import { faArrowRightFromBracket, faArrowUpRightFromSquare, faBars, faBriefcase,
 import { Link } from 'react-router-dom';
 import SidebarEmployer from '../components/SidebarEmployer';
 import EmployerHeader from '../components/EmployerHeader';
+import EmployerProfileEdit from '../components/EmployerProfileEdit';
 
 const EmployerDashboard = () => {
 
 
-    const value = 75
+    const [edit, setEdit] = useState(false)
 
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -44,6 +45,19 @@ const EmployerDashboard = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+
+            {/* edit modal */}
+            {edit &&
+                <div id='modal' className='absolute inset-0  items-center flex justify-center '>
+
+                    <EmployerProfileEdit setEdit={setEdit} />
+
+                </div>
+
+            }
+
+
+            {/* sidebar below md screen size */}
             <AnimatePresence>
                 {
                     medMenyOpen &&
@@ -58,7 +72,7 @@ const EmployerDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarEmployer />
+                        <SidebarEmployer setEdit={setEdit} />
                     </motion.div>
                 }
             </AnimatePresence>
@@ -75,7 +89,8 @@ const EmployerDashboard = () => {
                     layout: { duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }
                 }}
                 className=' w-full h-full md:grid px-3 sm:px-5'>
-
+                
+                {/* sidebar above md screen */}
                 <motion.div
                     layout
                     initial={false}
@@ -99,7 +114,7 @@ const EmployerDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarEmployer />
+                                <SidebarEmployer setEdit={setEdit} />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -107,6 +122,7 @@ const EmployerDashboard = () => {
 
                 <div className=' bg-white rounded-2xl mt-3 mb-4 me-2'>
 
+                    {/* heading and buttons */}
                     <div className=' px-3 sm:px-10 pt-5 pb-5'>
                         <div className=' flex gap-5 justify-between items-center'>
                             <div className=' flex justify-center items-center'>
@@ -137,6 +153,8 @@ const EmployerDashboard = () => {
                         </div>
                     </div>
 
+
+                    {/* cards of employer */}
                     <div className=' grid md:grid-cols-3 px-3 sm:px-10 gap-10'>
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Jobs Posted</p>
@@ -165,8 +183,11 @@ const EmployerDashboard = () => {
                         <h1 id='he' className=' font-semibold text-2xl'>Jobs Posted By You</h1>
                     </div>
 
+                    {/* jobs posted */}
+
                     <div className=' grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-3 sm:px-10'>
 
+                        
                         <div className='border border-blue-400 rounded-xl h-full p-5'>
                             <div>
                                 <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>

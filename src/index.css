@@ -35,6 +35,10 @@ html {
   background-image: linear-gradient(white, #E0E4FF, #d6effd, #d6effd, #E0E4FF, white);
 }
 
+#modal{
+  background-color: rgba(0, 0, 0, 0.288);
+}
+
 
 
 /* pic slider  */

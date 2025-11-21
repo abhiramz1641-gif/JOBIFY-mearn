@@ -94,7 +94,7 @@ const LoginPage = () => {
 
                                 <div>
 
-                                    <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Admin</button>
+                                    <Link to={'/AdminDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Admin</button></Link>
 
                                 </div>
                     }

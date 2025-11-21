@@ -2,7 +2,7 @@ import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 
-const SidebarUser = () => {
+const SidebarUser = ({setEdit}) => {
     return (
         <div className="lg:min-w-max">
 
@@ -21,7 +21,7 @@ const SidebarUser = () => {
                         <p id='pa' className=' text-xs md:text-sm lg:text-base'>Btech Graduate</p>
                     </div>
                     <div className=' flex justify-center'>
-                        <button className=' bg-blue-900  hover:scale-103 p-2 mt-2 rounded text-white font-semibold shadow-2xl shadow-gray-400'>Edit Profile</button>
+                        <button onClick={()=>{setEdit(true)}} className=' bg-blue-900  hover:scale-103 p-2 mt-2 rounded text-white font-semibold shadow-2xl shadow-gray-400'>Edit Profile</button>
                     </div>
                 </div>
                 <div className=' mt-3 border border-blue-400 rounded-xl py-5 bg-white'>
