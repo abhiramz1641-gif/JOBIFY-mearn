@@ -4,6 +4,7 @@ import { faArrowRightFromBracket, faArrowUpRightFromSquare, faMagnifyingGlass, f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import JobFilter from '../components/JobFilter'
 import { AnimatePresence, motion } from "framer-motion";
+import { Link } from 'react-router-dom'
 
 const JobSearch = () => {
 
@@ -60,7 +61,7 @@ const JobSearch = () => {
                                         <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                     </div>
                                     <div>
-                                        <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                     </div>
                                 </div>
 
@@ -110,7 +111,7 @@ const JobSearch = () => {
                                         <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                     </div>
                                     <div>
-                                        <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                     </div>
                                 </div>
 
@@ -160,7 +161,7 @@ const JobSearch = () => {
                                         <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                     </div>
                                     <div>
-                                        <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                     </div>
                                 </div>
 
@@ -210,7 +211,7 @@ const JobSearch = () => {
                                         <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
                                     </div>
                                     <div>
-                                        <button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button>
+                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
                                     </div>
                                 </div>
 
