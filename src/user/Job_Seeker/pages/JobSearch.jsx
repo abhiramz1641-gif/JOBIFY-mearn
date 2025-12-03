@@ -1,17 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserHeader from '../components/UserHeader'
 import { faArrowRightFromBracket, faArrowUpRightFromSquare, faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import JobFilter from '../components/JobFilter'
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from 'react-router-dom'
+import { jobsApi } from '../../../services/allApis'
 
 const JobSearch = () => {
 
-    const value=90
+    const value = 90
+
+    const [allJobs, setAllJobs] = useState([])
 
 
     const [filter, setFilter] = useState(false)
+
+    const getjobs = async () => {
+
+        const result = await jobsApi()
+        console.log(result.data);
+        setAllJobs(result.data)
+
+    }
+
+
+    useEffect(() => {
+
+        getjobs()
+
+    }, [])
+
+
 
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
@@ -54,7 +74,7 @@ const JobSearch = () => {
 
                         <div className=' grid lg:grid-cols-2 px-5 gap-5'>
 
-                            <div className='border border-blue-400 rounded-xl h-full p-5'>
+                            {/* <div className='border border-blue-400 rounded-xl h-full p-5'>
                                 <div className=' flex justify-between items-center'>
                                     <div>
                                         <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
@@ -96,164 +116,85 @@ const JobSearch = () => {
                                             }}
                                         >
                                             <span style={{
-                                                width:"40px",
-                                                height:"40px",
-                                                borderRadius:"50%"
-                                                }} className=' flex justify-center items-center bg-white'>{value}%</span>
+                                                width: "40px",
+                                                height: "40px",
+                                                borderRadius: "50%"
+                                            }} className=' flex justify-center items-center bg-white'>{value}%</span>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className='border border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                    </div>
-                                    <div>
-                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                    </div>
-                                </div>
+                            </div> */}
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
+                            {allJobs.length > 0 &&
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
 
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <p id='pa' className=' text-gray-500'>Full-time</p>
-                                    </div>
-                                    <div className=' flex justify-center items-center gap-3'>
-                                        <p>Profile Compatibility</p>
-                                        <div
-                                            style={{
-                                                width: "50px",
-                                                height: "50px",
-                                                borderRadius: "50%",
-                                                background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                fontSize: "15px",
-                                                fontWeight: "bold"
-                                            }}
-                                        >
-                                            <span style={{
-                                                width:"40px",
-                                                height:"40px",
-                                                borderRadius:"50%"
-                                                }} className=' flex justify-center items-center bg-white'>{value}%</span>
+                                allJobs.map((job, index) => (
+
+                                    job.status=="approved" &&
+
+                                    <div className='border border-blue-400 rounded-xl h-full p-5'>
+                                        <div className=' flex justify-between items-center'>
+                                            <div>
+                                                <h1 id='pa' className=' text-lg font-semibold'>{job.jobTitle}</h1>
+                                                <h1 id='pa' className=' text-gray-500 mb-2'>{job.company}</h1>
+                                            </div>
+                                            <div>
+                                                <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
+                                            </div>
+                                        </div>
+
+                                        <div className=' flex gap-2 mb-3 flex-wrap'>
+                                            {job.skills.map(item=>(
+
+                                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
+
+                                            ))
+
+                                            }
+
+                                        </div>
+
+                                        <div className=' mb-5'>
+                                            <p id='pa'>{job.location}</p>
+                                            <p id='pa'>${job.salary}</p>
+                                        </div>
+
+                                        <div className=' flex justify-between items-center'>
+                                            <div>
+                                                <p id='pa' className=' text-gray-500'>{job.jobType}</p>
+                                            </div>
+                                            <div className=' flex justify-center items-center gap-3'>
+                                                <p>Profile Compatibility</p>
+                                                <div
+                                                    style={{
+                                                        width: "50px",
+                                                        height: "50px",
+                                                        borderRadius: "50%",
+                                                        background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        fontSize: "15px",
+                                                        fontWeight: "bold"
+                                                    }}
+                                                >
+                                                    <span style={{
+                                                        width: "40px",
+                                                        height: "40px",
+                                                        borderRadius: "50%"
+                                                    }} className=' flex justify-center items-center bg-white'>{value}%</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className='border border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                    </div>
-                                    <div>
-                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                    </div>
-                                </div>
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
+                                ))
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
 
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <p id='pa' className=' text-gray-500'>Full-time</p>
-                                    </div>
-                                    <div className=' flex justify-center items-center gap-3'>
-                                        <p>Profile Compatibility</p>
-                                        <div
-                                            style={{
-                                                width: "50px",
-                                                height: "50px",
-                                                borderRadius: "50%",
-                                                background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                fontSize: "15px",
-                                                fontWeight: "bold"
-                                            }}
-                                        >
-                                            <span style={{
-                                                width:"40px",
-                                                height:"40px",
-                                                borderRadius:"50%"
-                                                }} className=' flex justify-center items-center bg-white'>{value}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='border border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                    </div>
-                                    <div>
-                                        <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                    </div>
-                                </div>
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
+                            }
 
-                                <div className=' flex justify-between items-center'>
-                                    <div>
-                                        <p id='pa' className=' text-gray-500'>Full-time</p>
-                                    </div>
-                                    <div className=' flex justify-center items-center gap-3'>
-                                        <p>Profile Compatibility</p>
-                                        <div
-                                            style={{
-                                                width: "50px",
-                                                height: "50px",
-                                                borderRadius: "50%",
-                                                background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                                display: "flex",
-                                                alignItems: "center",
-                                                justifyContent: "center",
-                                                fontSize: "15px",
-                                                fontWeight: "bold"
-                                            }}
-                                        >
-                                            <span style={{
-                                                width:"40px",
-                                                height:"40px",
-                                                borderRadius:"50%"
-                                                }} className=' flex justify-center items-center bg-white'>{value}%</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
 
                         </div>

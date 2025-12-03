@@ -30,7 +30,7 @@ function App() {
         {/* employer */}
         <Route path="/EmployerDashboard" element={<EmployerDashboard/>} />
         <Route path="/JobPosted" element={<JobPosted/>} />
-        <Route path="/JobEdit" element={<EmployerJobEdit/>} />
+        <Route path="/JobEdit/:id" element={<EmployerJobEdit/>} />
         <Route path="/jobApplications" element={<JobApplications/>} />
         <Route path="/jobPost" element={<JobPost/>} />
         <Route path="/ViewApplication" element={<ViewApplication/>} />

@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import DarkVeil from '../components/DarkVeil'
 import { FluidTabs } from '../components/FluidTabs'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginApi, registerApi } from '../services/allApis'
+import toast, { Toaster } from 'react-hot-toast'
 
 const LoginPage = () => {
 
+    const navigate = useNavigate()
 
     const [register, setregister] = useState(false)
     const [user, setUser] = useState(1)
+
+    const [userDetails, setUserDetails] = useState({
+        username: "",
+        email: "",
+        password: "",
+        bio: {
+            type: ""
+        }
+    })
 
 
     const handleTab = (tab) => {
@@ -23,6 +35,140 @@ const LoginPage = () => {
 
     }
 
+    // Sign up
+    const handleRegister = async () => {
+
+        const { username, email, password, bio } = userDetails
+
+        if (username && email && password) {
+            if (user == 1) {
+                bio.type = "jobSeeker"
+
+                const result = await registerApi({ username, email, password, bio })
+                console.log(result);
+
+                if (result.status == 200) {
+                    toast.success('SignUp Successfull.', {
+                        duration: 1500
+                    })
+
+                    setregister(false)
+                    setUserDetails({
+                        username: "",
+                        email: "",
+                        password: "",
+                        bio: {
+                            type: ""
+                        }
+                    })
+                } else {
+                    toast.error('SignUp Failed.', {
+                        duration: 1500
+                    })
+                }
+            }
+            else {
+                bio.type = "Employer"
+
+                const result = await registerApi({ username, email, password, bio })
+                console.log(result);
+
+                if (result.status == 200) {
+                    toast.success('SignUp Successfull.', {
+                        duration: 1500
+                    })
+
+                    setregister(false)
+                    setUserDetails({
+                        username: "",
+                        email: "",
+                        password: "",
+                        bio: {
+                            type: ""
+                        }
+                    })
+                } else {
+                    toast.error('SignUp Failed.', {
+                        duration: 1500
+                    })
+                }
+            }
+        } else {
+            toast.error('Please Fill The Fields.', {
+                duration: 1500
+            })
+        }
+    }
+
+    // Sign in
+    const handleSignIn = async () => {
+
+        const { username, email, password, bio } = userDetails
+
+        if (email && password) {
+
+            const result = await loginApi({ email, password })
+            console.log(result);
+
+            if (result.status == 200) {
+
+                if (result.data.existingUser.bio.type == "jobSeeker" && user == 1 || result.data.existingUser.bio.type == "Employer" && user == 2 || result.data.existingUser.bio.type == "Admin" && user == 3) {
+
+                    toast.success('SignIn Successfull.', {
+                        duration: 1500
+                    })
+
+                    sessionStorage.setItem("id",result.data.existingUser._id)
+                    sessionStorage.setItem("email",result.data.existingUser.email)
+
+                    setUserDetails({
+                        username: "",
+                        email: "",
+                        password: "",
+                        bio: {
+                            type: ""
+                        }
+                    })
+
+                    setTimeout(() => {
+
+                        if (user == 1) {
+
+                            navigate('/userDashboard')
+
+                        } else if (user == 2) {
+
+                            navigate('/EmployerDashboard')
+
+                        } else {
+
+                            navigate('/AdminDashboard')
+
+                        }
+
+                    }, 1500);
+
+                } else {
+                    toast.error('User Not Found.', {
+                        duration: 1500
+                    })
+                }
+
+
+            } else {
+                toast.error('SignIn Failed.', {
+                    duration: 1500
+                })
+            }
+
+        } else {
+            toast.error('Please Fill The Fields.', {
+                duration: 1500
+            })
+        }
+
+    }
+
 
 
 
@@ -30,6 +176,12 @@ const LoginPage = () => {
 
     return (
         <div>
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
+
             <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
                 <DarkVeil />
             </div>
@@ -45,22 +197,39 @@ const LoginPage = () => {
                         />
                     </div>
 
+                    {
+                        register == true && user != 3 &&
+                        <div className=' w-full'>
+                            <h1 id='pa' className=' font-semibold mb-2'>Username</h1>
+                            <input type='text' className=' w-full mb-5 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder='Username' value={userDetails.username} onChange={(e) => setUserDetails({ ...userDetails, username: e.target.value })} />
+                        </div>
+                    }
+
 
                     <h1 id='pa' className=' font-semibold mb-2'>Email</h1>
-                    <input type="text" className=' mb-5 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder=' Email Id' />
+                    <input type="email" className=' mb-5 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder=' Email Id' value={userDetails.email} onChange={(e) => setUserDetails({ ...userDetails, email: e.target.value })} />
 
                     <h1 id='pa' className=' font-semibold mb-2'>Password</h1>
-                    <input type='password' className=' mb-2 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder='Password' />
+                    <input type='password' className=' mb-2 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder='Password' value={userDetails.password} onChange={(e) => setUserDetails({ ...userDetails, password: e.target.value })} />
 
-                    {
+                    {/* {
                         register == true && user != 3 &&
                         <div className=' w-full'>
                             <h1 id='pa' className=' font-semibold mb-2 mt-3'>Confirm Password</h1>
                             <input type='password' className=' w-full mb-5 bg-white p-2 rounded placeholder-gray-500 text-black' placeholder='Confirm Password' />
                         </div>
-                    }
+                    } */}
 
-                    {!register && <h1 className=' text-end cursor-pointer hover:underline'>Forgot Password?</h1>}
+                    {/* {!register && <h1 className=' text-end cursor-pointer hover:underline'>Forgot Password?</h1>} */}
+
+                    {!register && <h1
+                        className=' text-end cursor-pointer hover:underline'
+                        onClick={() => navigate("/forgot")}
+                    >
+                        Forgot Password?
+                    </h1>}
+
+
 
 
                     {
@@ -68,11 +237,11 @@ const LoginPage = () => {
                             <div>
                                 {
                                     register ?
-                                        <Link to={'/userDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Job Seeker Account</button></Link>
+                                        <button onClick={handleRegister} style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Job Seeker Account</button>
 
                                         :
 
-                                        <Link to={'/userDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Job Seeker</button></Link>
+                                        <button onClick={handleSignIn} style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Job Seeker</button>
 
                                 }
                             </div>
@@ -81,11 +250,11 @@ const LoginPage = () => {
                                 <div>
                                     {
                                         register ?
-                                            <Link to={'/EmployerDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Employer Account</button></Link>
+                                            <button onClick={handleRegister} style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Create Employer Account</button>
 
                                             :
 
-                                            <Link to={'/EmployerDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Employer</button></Link>
+                                            <button onClick={handleSignIn} style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Employer</button>
 
                                     }
                                 </div>
@@ -94,7 +263,7 @@ const LoginPage = () => {
 
                                 <div>
 
-                                    <Link to={'/AdminDashboard'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Admin</button></Link>
+                                    <button onClick={handleSignIn} style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' mt-6 hover:scale-101 p-2 px-8 rounded w-full text-white font-semibold shadow-2xl shadow-black'>Sign In as Admin</button>
 
                                 </div>
                     }

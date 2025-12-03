@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AnimatedHamburgerButton from '../components/AnimatedHamburgerButton';
 import { faBars, faBriefcase, faFile, faL, faX } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import SidebarAdmin from '../components/SidebarAdmin';
 import AdminHeader from '../components/AdminHeader';
 import AdminProfileEdit from '../components/AdminProfileEdit';
+import { adminJobApprovalApi, jobsApi } from '../../services/allApis';
 const AdminDashbord = () => {
 
 
@@ -19,6 +20,9 @@ const AdminDashbord = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
+
+    const [allJobs, setAllJobs] = useState([])
+
 
     const handleMedSideBarOpen = () => {
 
@@ -53,6 +57,28 @@ const AdminDashbord = () => {
         setJobs(false)
         setApplications(true)
     }
+
+    const handleApprove = async (id) => {
+
+        const result = await adminJobApprovalApi({ id })
+        setAllJobs(result.data)
+
+    }
+
+    const getjobs = async () => {
+
+        const result = await jobsApi()
+        console.log(result.data);
+        setAllJobs(result.data)
+
+    }
+
+
+    useEffect(() => {
+
+        getjobs()
+
+    }, [allJobs])
 
 
 
@@ -188,112 +214,55 @@ const AdminDashbord = () => {
 
                     {/* jobs posted */}
                     {jobs &&
+
+                        allJobs.length > 0 &&
+
+
+
                         <div className=' bg-blue-900 mx-5 rounded-2xl py-5 md:py-10 grid lg:grid-cols-2 px-5 md:px-10 gap-5'>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
+                            {
+                                allJobs.map((job, index) => (
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
+                                    <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
+                                        <div>
+                                            <h1 id='pa' className=' text-lg font-semibold'>{job.jobTitle}</h1>
+                                            <h1 id='pa' className=' text-gray-500 mb-2'>{job.company}</h1>
+                                        </div>
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
+                                        <div className=' flex gap-2 mb-3 flex-wrap'>
+                                            {job.skills.map(item => (
 
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
+                                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
+                                            ))
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
+                                            }
+                                        </div>
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
+                                        <div className=' mb-5'>
+                                            <p id='pa'>{job.location}</p>
+                                            <p id='pa'>${job.salary}</p>
+                                        </div>
 
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
+                                        <div>
+                                            <p id='pa' className=' text-gray-500'>{job.jobType}</p>
+                                        </div>
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
+                                        <div className=' flex flex-wrap gap-3 items-center mt-5'>
+                                            {job.status == "approved" ?
+                                                <span className=' px-3 p-1 border  border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approved</span>
+                                                :
+                                                <button onClick={() => handleApprove(job._id)} className=' px-3 p-1 border border-green-600 text-green-600 rounded hover:scale-102'>Approve</button>
+                                            }
+                                        </div>
+                                    </div>
 
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
+                                ))
+                            }
 
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
-
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
-
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
-
-                                <div className=' flex gap-2 mb-3 flex-wrap'>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                    <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                                </div>
-
-                                <div className=' mb-5'>
-                                    <p id='pa'>San Francisco, CA</p>
-                                    <p id='pa'>$120k - $160k</p>
-                                </div>
-
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
-
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
                         </div>
+
+
                     }
 
                     {/* applications */}
