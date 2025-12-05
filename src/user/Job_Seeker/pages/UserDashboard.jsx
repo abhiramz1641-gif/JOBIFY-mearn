@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../../../components/Header'
 import UserHeader from '../components/UserHeader'
 import { faArrowRightFromBracket, faArrowUpRightFromSquare, faBars, faBriefcase, faCalendarWeek, faCross, faFile, faX } from '@fortawesome/free-solid-svg-icons'
@@ -8,6 +8,7 @@ import SidebarUser from '../components/SidebarUser'
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom'
 import ProfileEdit from '../components/ProfileEdit'
+import { getUserApi } from '../../../services/allApis'
 
 const UserDashboard = () => {
 
@@ -15,11 +16,19 @@ const UserDashboard = () => {
 
     const value = 75
 
+    const [email, setEmail] = useState('')
+
+    const [userDetails, setUserDetails] = useState({})
+
+
     const [edit, setEdit] = useState(false)
 
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
+
+
+
 
     const handleMedSideBarOpen = () => {
 
@@ -44,6 +53,36 @@ const UserDashboard = () => {
 
     };
 
+    const getUserData = async (mail) => {
+
+        const mailId = {
+            email: mail
+        }
+        console.log(mailId);
+
+
+        const result = await getUserApi(mailId)
+
+        console.log(result.data.existingUser);
+
+        setUserDetails(result.data.existingUser)
+
+
+    }
+
+
+    useEffect(() => {
+
+        const mail = sessionStorage.getItem('email')
+        setEmail(mail)
+        getUserData(mail)
+
+    }, [])
+
+
+
+
+
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
@@ -52,7 +91,7 @@ const UserDashboard = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <ProfileEdit setEdit={setEdit} />
+                    <ProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -74,7 +113,7 @@ const UserDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarUser setEdit={setEdit} />
+                        <SidebarUser setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
@@ -119,7 +158,7 @@ const UserDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarUser setEdit={setEdit}/>
+                                <SidebarUser setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -133,7 +172,7 @@ const UserDashboard = () => {
                                 <div className=' hidden md:block'><AnimatedHamburgerButton onToggle={handleToggle} /></div>
 
                                 <div>
-                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>Abhiram</span></h1>
+                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>{userDetails.username}</span></h1>
                                     <p id='pa' className=' '>Here's what's happening with your job search today.</p>
                                 </div>
                             </div>

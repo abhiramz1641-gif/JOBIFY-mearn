@@ -15,6 +15,21 @@ export const loginApi= async(reqBody)=>{
 
 }
 
+//get user
+export const getUserApi= async(reqBody)=>{
+
+   return await commonApi("post",`${serverURL}/get-user`,reqBody)
+
+}
+
+// edit user
+export const editUserApi= async(reqBody)=>{
+
+   return await commonApi("put",`${serverURL}/user-edit`,reqBody)
+
+}
+
+
 // post job
 export const jobPostApi= async(reqBody)=>{
 

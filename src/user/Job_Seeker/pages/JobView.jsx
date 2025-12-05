@@ -1,21 +1,41 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserHeader from '../components/UserHeader'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket, faFileArrowUp, faL } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
+import { jobsByIdApi } from '../../../services/allApis'
 
 
 
 const JobView = () => {
 
+    const id = useParams()
+    console.log(id);
 
     const [apply, setApply] = useState(false)
 
+    const [job, setJob] = useState({})
 
 
 
-    const value = 70
+
+    const getJob = async () => {
+
+        const result = await jobsByIdApi(id)
+        console.log(result);
+        const jobb = result.data
+        setJob(jobb)
+        // setJob2(jobb)
+
+    }
+
+
+    useEffect(() => {
+
+        getJob()
+
+    }, [])
 
 
 
@@ -29,7 +49,7 @@ const JobView = () => {
 
             <div className={apply ? ' w-full h-full grid md:grid-cols-[4fr_2fr] gap-3 px-5' : 'w-full h-full grid px-5'}>
 
-                <div className='border border-blue-400 rounded-xl h-full p-5 md:p-10 bg-white'>
+                {/* <div className='border border-blue-400 rounded-xl h-full p-5 md:p-10 bg-white'>
                     <div className=' flex justify-between items-center'>
                         <div>
                             <h1 id='pa' className=' text-2xl font-bold'>Senior Frontend Developer</h1>
@@ -42,7 +62,7 @@ const JobView = () => {
 
                         <p className=' text-xs sm:text-sm md:text-base'>
                             Recusandae repellat repellendus rem vel illum ratione magni voluptatibus eaque doloremque. Nisi similique autem aliquam in atque adipisci incidunt debitis consectetur tempora quos at sit, illo assumenda accusantium culpa modi!
-                            Recusandae repellat repellendus rem vel illum ratione magni voluptatibus eaque doloremque. Nisi 
+                            Recusandae repellat repellendus rem vel illum ratione magni voluptatibus eaque doloremque. Nisi
                             Recusandae repellat repellendus rem vel illum ratione magni voluptatibus eaque doloremque. Nisi similique autem aliquam in atque adipisci incidunt debitis consectetur tempora quos at sit, illo assumenda accusantium culpa modi!
 
                             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Commodi tenetur doloremque saepe, delectus ut quo libero vero vel. Placeat, facere dicta! Impedit similique, debitis mollitia eos facilis quidem obcaecati architecto?
@@ -72,8 +92,54 @@ const JobView = () => {
                         <button onClick={() => setApply(true)} className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply <FontAwesomeIcon icon={faFileArrowUp} /></button>
                     </div>
 
-                </div>
+                </div> */}
 
+                {job &&
+
+
+                    <div className='border border-blue-400 rounded-xl h-full p-5 md:p-10 bg-white'>
+                        <div className=' flex justify-between items-center'>
+                            <div>
+                                <h1 id='pa' className=' text-2xl font-bold'>{job?.jobTitle}</h1>
+                                <h1 id='pa' className=' text-gray-500 mb-2 font-bold text-xl'>{job?.company}</h1>
+                            </div>
+                        </div>
+
+                        <div className=' my-3'>
+                            <h1 id='pa' className=' text-lg font-semibold'>About The Job</h1>
+
+                            <p className=' text-xs sm:text-sm md:text-base'>
+                                {job?.description}
+                            </p>
+                        </div>
+
+                        <div className=' flex gap-2 mb-3 flex-wrap'>
+                            {job?.skills?.map((item, index) => (
+
+                                <div key={index} className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
+
+                            ))
+
+                            }
+                        </div>
+
+                        <div className=' mb-5 flex flex-col gap-1.5'>
+                            <p id='pa'>{job.location}</p>
+                            <p id='pa'>₹{job.salary}</p>
+                            <p id='pa'>{job.experience} year+</p>
+                        </div>
+
+                        <div>
+                            <p id='pa' className=' text-gray-500'>{job?.jobType}</p>
+                        </div>
+
+                        <div className=' flex justify-center'>
+                            <button onClick={() => setApply(true)} className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply <FontAwesomeIcon icon={faFileArrowUp} /></button>
+                        </div>
+
+                    </div>
+
+                }
 
 
                 <motion.div
@@ -104,8 +170,8 @@ const JobView = () => {
                                 className=' border border-blue-400 rounded-xl h-full p-5 bg-white'>
 
                                 <div className=' mb-8'>
-                                   <h1 id='he' className=' font-bold text-2xl'>Fill The Form</h1> 
-                                </div>    
+                                    <h1 id='he' className=' font-bold text-2xl'>Fill The Form</h1>
+                                </div>
 
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>First Name</h1>
@@ -125,7 +191,7 @@ const JobView = () => {
                                 </div>
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-2'>Upload Resume</h1>
-                                    
+
                                     <div className=' flex flex-wrap items-center mt-1'>
                                         <label htmlFor="fl" className=' bg-blue-900 text-white px-4 p-2 rounded-lg hover:scale-102'>Select File</label>
                                         <input type="file" id='fl' className=' hidden border p-0.5 border-blue-900 rounded-r-lg' placeholder=' file' />
@@ -133,8 +199,8 @@ const JobView = () => {
                                 </div>
 
                                 <div className=' flex gap-3 mt-10'>
-                                    <button onClick={()=>setApply(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
-                                    <button onClick={()=>setApply(false)} className=' px-2 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Submit</button>
+                                    <button onClick={() => setApply(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
+                                    <button onClick={() => setApply(false)} className=' px-2 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Submit</button>
                                 </div>
 
 

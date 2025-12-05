@@ -25,7 +25,7 @@ function App() {
         {/* job seeker */}
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/jobs" element={<JobSearch />} />
-        <Route path="/jobview" element={<JobView/>} />
+        <Route path="/jobview/:id" element={<JobView/>} />
 
         {/* employer */}
         <Route path="/EmployerDashboard" element={<EmployerDashboard/>} />

@@ -17,7 +17,14 @@ const LoginPage = () => {
         email: "",
         password: "",
         bio: {
-            type: ""
+            type: "",
+            title: "",
+            pic: "",
+            email: "",
+            experience: "",
+            education: "",
+            skills: [],
+            resume: ""
         }
     })
 
@@ -58,7 +65,14 @@ const LoginPage = () => {
                         email: "",
                         password: "",
                         bio: {
-                            type: ""
+                            type: "",
+                            title: "",
+                            pic: "",
+                            email: "",
+                            experience: "",
+                            education: "",
+                            skills: [],
+                            resume: ""
                         }
                     })
                 } else {
@@ -84,7 +98,14 @@ const LoginPage = () => {
                         email: "",
                         password: "",
                         bio: {
-                            type: ""
+                            type: "",
+                            title: "",
+                            pic: "",
+                            email: "",
+                            experience: "",
+                            education: "",
+                            skills: [],
+                            resume: ""
                         }
                     })
                 } else {
@@ -118,15 +139,22 @@ const LoginPage = () => {
                         duration: 1500
                     })
 
-                    sessionStorage.setItem("id",result.data.existingUser._id)
-                    sessionStorage.setItem("email",result.data.existingUser.email)
+                    sessionStorage.setItem("id", result.data.existingUser._id)
+                    sessionStorage.setItem("email", result.data.existingUser.email)
 
                     setUserDetails({
                         username: "",
                         email: "",
                         password: "",
                         bio: {
-                            type: ""
+                            type: "",
+                            title: "",
+                            pic: "",
+                            email: "",
+                            experience: "",
+                            education: "",
+                            skills: [],
+                            resume: ""
                         }
                     })
 

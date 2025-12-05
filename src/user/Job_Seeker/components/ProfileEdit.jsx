@@ -1,8 +1,51 @@
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { editUserApi } from '../../../services/allApis'
+import toast, { Toaster } from 'react-hot-toast'
 
-const ProfileEdit = ({ setEdit }) => {
+const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
+
+
+    //console.log(userDetails.bio);
+
+    // useEffect(()=>{
+
+    //     setData(userDetails)
+
+    // },[])
+
+    const handleSkill = (skills) => {
+
+        const s = skills.split(',')
+        setUserDetails({ ...userDetails, bio: { ...userDetails.bio, skills: s } })
+
+    }
+
+    const handleEdit = async () => {
+
+        const result = await editUserApi(userDetails)
+        if (result.status == 200) {
+
+            toast.success('Saved Changes.', {
+                duration: 1000
+            })
+
+        } else {
+
+            toast.error('Failed.', {
+                duration: 1000
+            })
+
+        }
+
+        setTimeout(() => {
+            setEdit(false)
+        }, 1000)
+    }
+
+
+
     return (
         <div style={{ overflowX: "hidden", overflowY: "auto", zIndex: "50" }} className=' border h-fit sm:h-2/3 sm:w-1/2 w-6/7 rounded-2xl bg-white'>
             <div className=' m-3 sm:mx-10 sm:mb-5 sm:mt-5 border border-blue-400 rounded-xl h-fit p-5 bg-white'>
@@ -19,30 +62,29 @@ const ProfileEdit = ({ setEdit }) => {
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Name</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Name' />
+                    <input value={userDetails.username} onChange={(e) => setUserDetails({ ...userDetails, username: e.target.value })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Name' />
                 </div>
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Title</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Title' />
+                    <input value={userDetails.bio.title} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, title: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Title' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Email</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
+                    <input value={userDetails.bio.email} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, email: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
                 </div>
                 <div className=' mb-5'>
-                    <h1 id='he' className=' font-semibold mb-1'>Experience</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
+                    <h1 id='he' className=' font-semibold mb-1'>Experience (in years)</h1>
+                    <input value={userDetails.bio.experience} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, experience: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Highest Education</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Education' />
+                    <input value={userDetails.bio.education} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, education: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Education' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Skills ( Seperate by ' , ' )</h1>
-                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
+                    <input value={userDetails.bio.skills} onChange={(e) => handleSkill(e.target.value)} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
                 </div>
-
                 <div>
                     <h1 id='he' className='font-semibold'>Resume</h1>
                 </div>
@@ -51,11 +93,17 @@ const ProfileEdit = ({ setEdit }) => {
                 <input className=' hidden' id='resume' name='resume' type="file" />
 
                 <div className=' flex justify-center gap-3 mt-10 pb-5'>
-                    <button onClick={() => setEdit(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
-                    <button onClick={() => setEdit(false)} className=' px-6 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Edit</button>
+                    {/* <button onClick={() => setEdit(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button> */}
+                    <button onClick={handleEdit} className=' px-6 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Edit</button>
                 </div>
 
             </div>
+
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
         </div>
     )
 }

@@ -7,11 +7,15 @@ import { Link } from 'react-router-dom';
 import SidebarAdmin from '../components/SidebarAdmin';
 import AdminHeader from '../components/AdminHeader';
 import AdminProfileEdit from '../components/AdminProfileEdit';
-import { adminJobApprovalApi, jobsApi } from '../../services/allApis';
+import { adminJobApprovalApi, getUserApi, jobsApi } from '../../services/allApis';
 const AdminDashbord = () => {
 
 
     const [edit, setEdit] = useState(false)
+
+    const [email, setEmail] = useState('')
+
+    const [userDetails, setUserDetails] = useState({})
 
 
     const [application, setApplications] = useState(false)
@@ -73,6 +77,33 @@ const AdminDashbord = () => {
 
     }
 
+    const getUserData = async (mail) => {
+
+        const mailId = {
+            email: mail
+        }
+        console.log(mailId);
+
+
+        const result = await getUserApi(mailId)
+
+        console.log(result.data.existingUser);
+
+        setUserDetails(result.data.existingUser)
+
+
+    }
+    
+
+    useEffect(() => {
+
+        
+        const mail = sessionStorage.getItem('email')
+        setEmail(mail)
+        getUserData(mail)
+
+    }, [])
+
 
     useEffect(() => {
 
@@ -90,7 +121,7 @@ const AdminDashbord = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <AdminProfileEdit setEdit={setEdit} />
+                    <AdminProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails}/>
 
                 </div>
 
@@ -112,7 +143,7 @@ const AdminDashbord = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarAdmin setEdit={setEdit} />
+                        <SidebarAdmin setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
@@ -154,7 +185,7 @@ const AdminDashbord = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarAdmin setEdit={setEdit} />
+                                <SidebarAdmin setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -169,11 +200,9 @@ const AdminDashbord = () => {
                                 <div className=' hidden md:block'><AnimatedHamburgerButton onToggle={handleToggle} /></div>
 
                                 <div>
-                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>Admin</span></h1>
+                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>{userDetails.username}</span></h1>
                                 </div>
                             </div>
-
-
 
                             {
                                 !medMenyOpen &&
@@ -190,7 +219,7 @@ const AdminDashbord = () => {
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Jobs Posted</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>4</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{allJobs.length}</h1>
                                 <FontAwesomeIcon icon={faBriefcase} className=' text-3xl' />
                             </div>
                         </div>

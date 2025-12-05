@@ -91,7 +91,8 @@ const JobPost = () => {
       location: "",
       salary: "",
       jobType: "",
-      employerMail: ""
+      employerMail: "",
+      experience:''
 
     })
 
@@ -135,6 +136,10 @@ const JobPost = () => {
             className=' border border-blue-300 rounded-md p-1 w-full px-2'
             placeholder='Skills'
           />
+        </div>
+        <div className=' mb-5'>
+          <h1 id='he' className=' font-semibold mb-1'>Minimum experience prefered (in years)</h1>
+          <input type="text" value={job.experience} onChange={(e) => setJob({ ...job, experience: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
         </div>
         <div className=' mb-5'>
           <h1 id='he' className=' font-semibold mb-1'>Job Location</h1>

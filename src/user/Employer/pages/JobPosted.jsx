@@ -50,14 +50,13 @@ const JobPosted = () => {
                 <div className=' bg-white rounded-2xl mt-3 mb-4'>
                     <div className=' pb-5'>
                         <div className='p-5 flex items-center gap-5'>
-
                             <h1 id='he' className=' font-semibold text-2xl'>Jobs Posted</h1>
                         </div>
 
-                        <div className=' pb-5 px-5 flex justify-center items-center'>
+                        {/* <div className=' pb-5 px-5 flex justify-center items-center'>
                             <input type="text" className=' bg-white border border-blue-300 rounded-l-lg p-1 px-2' placeholder='Job Title' />
                             <button className='text-white border border-blue-900 rounded-r-lg px-3 py-1 bg-blue-900 hover:scale-102'>Search <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                        </div>
+                        </div> */}
 
                         <div className=' grid lg:grid-cols-2 px-5 gap-5'>
 
@@ -87,9 +86,10 @@ const JobPosted = () => {
                                             }
                                         </div>
 
-                                        <div className=' mb-5'>
+                                        <div className=' mb-5 flex flex-col gap-1.5'>
                                             <p id='pa'>{job.location}</p>
                                             <p id='pa'>${job.salary}</p>
+                                            <p id='pa'>{job.experience} year+</p>
                                         </div>
 
                                         <div>

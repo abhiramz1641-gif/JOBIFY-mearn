@@ -1,21 +1,29 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AnimatedHamburgerButton from '../../Job_Seeker/components/AnimatedHamburgerButton';
 import { faArrowRightFromBracket, faArrowUpRightFromSquare, faBars, faBriefcase, faCalendarWeek, faFile, faX } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import SidebarEmployer from '../components/SidebarEmployer';
 import EmployerHeader from '../components/EmployerHeader';
 import EmployerProfileEdit from '../components/EmployerProfileEdit';
+import { getUserApi, jobsPostedApi } from '../../../services/allApis';
 
 const EmployerDashboard = () => {
 
 
     const [edit, setEdit] = useState(false)
 
+    const [email, setEmail] = useState('')
+
+    const [userDetails, setUserDetails] = useState({})
+
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
+
+    const [jobs, setJobs] = useState([])
+
 
     const handleMedSideBarOpen = () => {
 
@@ -40,6 +48,55 @@ const EmployerDashboard = () => {
 
     };
 
+    const getUserData = async (mail) => {
+
+        const mailId = {
+            email: mail
+        }
+        console.log(mailId);
+
+        const result = await getUserApi(mailId)
+
+        console.log(result.data.existingUser);
+
+        setUserDetails(result.data.existingUser)
+
+    }
+
+
+
+    const getPostedJobs = async () => {
+
+        const email = sessionStorage.getItem("email")
+        //console.log(email);
+        const mail = {
+            email: email
+        }
+        //console.log(mail);
+
+        const result = await jobsPostedApi(mail)
+        console.log(result);
+        if (result.status === 200) {
+
+            const postedJobs = result.data
+            setJobs(postedJobs)
+
+        }
+
+    }
+
+
+
+
+    useEffect(() => {
+
+        const mail = sessionStorage.getItem('email')
+        setEmail(mail)
+        getUserData(mail)
+        getPostedJobs()
+
+    }, [])
+
 
 
     return (
@@ -50,7 +107,7 @@ const EmployerDashboard = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <EmployerProfileEdit setEdit={setEdit} />
+                    <EmployerProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -72,7 +129,7 @@ const EmployerDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarEmployer setEdit={setEdit} />
+                        <SidebarEmployer setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
@@ -89,7 +146,7 @@ const EmployerDashboard = () => {
                     layout: { duration: 0.5, ease: [0.4, 0.0, 0.2, 1] }
                 }}
                 className=' w-full h-full md:grid px-3 sm:px-5'>
-                
+
                 {/* sidebar above md screen */}
                 <motion.div
                     layout
@@ -114,7 +171,7 @@ const EmployerDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarEmployer setEdit={setEdit} />
+                                <SidebarEmployer setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -129,7 +186,7 @@ const EmployerDashboard = () => {
                                 <div className=' hidden md:block'><AnimatedHamburgerButton onToggle={handleToggle} /></div>
 
                                 <div>
-                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>Max</span></h1>
+                                    <h1 id='he' className=' font-bold text-xl md:text-3xl'>Welcome <span className=' text-2xl md:text-4xl'>{userDetails.username}</span></h1>
                                     <p id='pa' className=' '>Here's what's happening with your job listing today.</p>
                                 </div>
                             </div>
@@ -159,7 +216,7 @@ const EmployerDashboard = () => {
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Jobs Posted</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>4</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{jobs.length}</h1>
                                 <FontAwesomeIcon icon={faBriefcase} className=' text-3xl' />
                             </div>
                         </div>
@@ -187,71 +244,44 @@ const EmployerDashboard = () => {
 
                     <div className=' grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-3 sm:px-10'>
 
-                        
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div>
-                                <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                            </div>
 
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
+                        {jobs.length > 0 &&
 
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
+                            jobs.map((job, index) => (
 
-                            <div>
-                                <p id='pa' className=' text-gray-500'>Full-time</p>
-                            </div>
-                        </div>
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div>
-                                <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                            </div>
+                                index < 3 &&
 
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
+                                <div key={index} className='border border-blue-400 rounded-xl h-full p-5'>
+                                    <div className=' flex justify-between items-center'>
+                                        <div>
+                                            <h1 id='pa' className=' text-lg font-semibold'>{job.jobTitle}</h1>
+                                            <h1 id='pa' className=' text-gray-500 mb-2'>{job.company}</h1>
+                                        </div>
+                                    </div>
 
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
+                                    <div className=' flex gap-2 mb-3 flex-wrap'>
+                                        {job.skills.map(item => (
 
-                            <div>
-                                <p id='pa' className=' text-gray-500'>Full-time</p>
-                            </div>
-                        </div>
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div>
-                                <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                            </div>
+                                            <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
 
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
+                                        ))
 
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
+                                        }
+                                    </div>
 
-                            <div>
-                                <p id='pa' className=' text-gray-500'>Full-time</p>
-                            </div>
-                        </div>
+                                    <div className=' mb-5 flex flex-col gap-1.5'>
+                                        <p id='pa'>{job.location}</p>
+                                        <p id='pa'>${job.salary}</p>
+                                        <p id='pa'>{job.experience} year+</p>
+                                    </div>
 
+                                    <div>
+                                        <p id='pa' className=' text-gray-500'>{job.jobType}</p>
+                                    </div>
+                                </div>
+
+                            ))
+                        }
 
                     </div>
 

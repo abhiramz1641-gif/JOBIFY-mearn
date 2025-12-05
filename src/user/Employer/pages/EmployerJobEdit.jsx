@@ -36,13 +36,12 @@ const EmployerJobEdit = () => {
 
     }
 
-    const handleEdit=async()=>{
+    const handleEdit = async () => {
 
         setApply(false)
-        const result=await editJobApi(job)
+        const result = await editJobApi(job)
         console.log(result);
-        
-        
+
     }
 
     // const handleDiscard = ()=>{
@@ -100,9 +99,10 @@ const EmployerJobEdit = () => {
                             }
                         </div>
 
-                        <div className=' mb-5'>
-                            <p id='pa'>{job?.location}</p>
-                            <p id='pa'>${job?.salary}</p>
+                        <div className=' mb-5 flex flex-col gap-1.5'>
+                            <p id='pa'>{job.location}</p>
+                            <p id='pa'>${job.salary}</p>
+                            <p id='pa'>{job.experience} year+</p>
                         </div>
 
                         <div>
@@ -167,6 +167,10 @@ const EmployerJobEdit = () => {
                                     <input type="text" value={job?.skills} onChange={(e) => handleSkill(e.target.value)} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
                                 </div>
                                 <div className=' mb-5'>
+                                    <h1 id='he' className=' font-semibold mb-1'>Minimum experience prefered (in years)</h1>
+                                    <input type="text" value={job?.experience} onChange={(e) => setJob({ ...job, experience: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
+                                </div>
+                                <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>Job Location</h1>
                                     <input type="text" value={job?.location} onChange={(e) => setJob({ ...job, location: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Job Location' />
                                 </div>
@@ -181,7 +185,7 @@ const EmployerJobEdit = () => {
 
 
                                 <div className=' flex gap-3 mt-10'>
-                                    <button onClick={()=>setApply(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
+                                    <button onClick={() => setApply(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
                                     <button onClick={handleEdit} className=' px-6 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Edit</button>
                                 </div>
 
