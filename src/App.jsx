@@ -11,6 +11,7 @@ import JobApplications from "./user/Employer/pages/JobApplications"
 import JobPost from "./user/Employer/pages/JobPost"
 import ViewApplication from "./user/Employer/pages/ViewApplication"
 import AdminDashbord from "./Admin/pages/AdminDashbord"
+import MyApplications from "./user/Job_Seeker/pages/myApplications"
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/jobs" element={<JobSearch />} />
         <Route path="/jobview/:id" element={<JobView/>} />
+        <Route path="/my-applications" element={<MyApplications/>} />
 
         {/* employer */}
         <Route path="/EmployerDashboard" element={<EmployerDashboard/>} />
@@ -33,7 +35,7 @@ function App() {
         <Route path="/JobEdit/:id" element={<EmployerJobEdit/>} />
         <Route path="/jobApplications" element={<JobApplications/>} />
         <Route path="/jobPost" element={<JobPost/>} />
-        <Route path="/ViewApplication" element={<ViewApplication/>} />
+        <Route path="/ViewApplication/:id" element={<ViewApplication/>} />
 
         {/* admin */}
         <Route path="/AdminDashboard" element={<AdminDashbord/>} />

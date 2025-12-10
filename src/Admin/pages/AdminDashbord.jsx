@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import SidebarAdmin from '../components/SidebarAdmin';
 import AdminHeader from '../components/AdminHeader';
 import AdminProfileEdit from '../components/AdminProfileEdit';
-import { adminJobApprovalApi, getUserApi, jobsApi } from '../../services/allApis';
+import { adminApplicationApprovalApi, adminJobApprovalApi, allApplicationsApi, getUserApi, jobsApi } from '../../services/allApis';
 const AdminDashbord = () => {
 
 
@@ -26,6 +26,8 @@ const AdminDashbord = () => {
     const [medMenyOpen, setMedMenuOpen] = useState(false)
 
     const [allJobs, setAllJobs] = useState([])
+
+    const [allApplication, setAllApplication] = useState([])
 
 
     const handleMedSideBarOpen = () => {
@@ -66,6 +68,7 @@ const AdminDashbord = () => {
 
         const result = await adminJobApprovalApi({ id })
         setAllJobs(result.data)
+        await getjobs()
 
     }
 
@@ -93,11 +96,26 @@ const AdminDashbord = () => {
 
 
     }
-    
+
+    const getApplication = async () => {
+
+        const result = await allApplicationsApi()
+        console.log(result.data);
+        setAllApplication(result.data)
+
+    }
+
+    const handleApproveApplication = async (id) => {
+
+        const result = await adminApplicationApprovalApi({ id })
+        console.log(result);
+        await getApplication()
+
+    }
+
 
     useEffect(() => {
 
-        
         const mail = sessionStorage.getItem('email')
         setEmail(mail)
         getUserData(mail)
@@ -108,8 +126,9 @@ const AdminDashbord = () => {
     useEffect(() => {
 
         getjobs()
+        getApplication()
 
-    }, [allJobs])
+    }, [])
 
 
 
@@ -121,7 +140,7 @@ const AdminDashbord = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <AdminProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails}/>
+                    <AdminProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -226,7 +245,7 @@ const AdminDashbord = () => {
                         <div className=' mt-3 border bg-amber-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Applications</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>54</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{allApplication.length}</h1>
                                 <FontAwesomeIcon icon={faFile} className=' text-3xl' />
                             </div>
                         </div>
@@ -252,7 +271,7 @@ const AdminDashbord = () => {
                             {
                                 allJobs.map((job, index) => (
 
-                                    <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
+                                    <div key={index} className='border bg-white border-blue-400 rounded-xl h-full p-5'>
                                         <div>
                                             <h1 id='pa' className=' text-lg font-semibold'>{job.jobTitle}</h1>
                                             <h1 id='pa' className=' text-gray-500 mb-2'>{job.company}</h1>
@@ -279,7 +298,7 @@ const AdminDashbord = () => {
 
                                         <div className=' flex flex-wrap gap-3 items-center mt-5'>
                                             {job.status == "approved" ?
-                                                <span className=' px-3 p-1 border  border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approved</span>
+                                                <span className=' px-3 p-1 border  border-green-600 bg-white text-green-600 rounded hover:scale-102'>Approved</span>
                                                 :
                                                 <button onClick={() => handleApprove(job._id)} className=' px-3 p-1 border border-green-600 text-green-600 rounded hover:scale-102'>Approve</button>
                                             }
@@ -297,74 +316,35 @@ const AdminDashbord = () => {
                     {/* applications */}
                     {application &&
                         <div className=' bg-blue-900 grid lg:grid-cols-2 mx-5 rounded-2xl px-5 md:px-10 gap-5 py-5 md:py-10'>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-start'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold mb-2'>Name of applicant</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>Email ID</h1>
-                                        <p id='pa' className=' text-gray-500'>Phone Number</p>
-                                    </div>
-                                </div>
-                                <div className=' flex items-center mt-3'>
-                                    <span className=' p-1 px-2 bg-blue-900 text-white rounded'><a href="" download="">view resume</a></span>
-                                </div>
+                            {allApplication.length > 0 &&
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-start'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold mb-2'>Name of applicant</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>Email ID</h1>
-                                        <p id='pa' className=' text-gray-500'>Phone Number</p>
-                                    </div>
-                                </div>
-                                <div className=' flex items-center mt-3'>
-                                    <span className=' p-1 px-2 bg-blue-900 text-white rounded'><a href="" download="">view resume</a></span>
-                                </div>
+                                allApplication.map((app, index) => (
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-start'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold mb-2'>Name of applicant</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>Email ID</h1>
-                                        <p id='pa' className=' text-gray-500'>Phone Number</p>
-                                    </div>
-                                </div>
-                                <div className=' flex items-center mt-3'>
-                                    <span className=' p-1 px-2 bg-blue-900 text-white rounded'><a href="" download="">view resume</a></span>
-                                </div>
+                                    <div key={index} className='border bg-white border-blue-400 rounded-xl h-full p-5'>
+                                        <div className=' flex justify-between items-start'>
+                                            <div>
+                                                <h1 id='pa' className=' text-lg font-semibold mb-2'>{app.firstName} {app.lastName}</h1>
+                                                <h1 id='pa' className=' text-gray-500 mb-2'>{app.emailId}</h1>
+                                                <p id='pa' className=' text-gray-500'>{app.phoneNumber}</p>
+                                            </div>
+                                        </div>
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
-                            <div className='border bg-white border-blue-400 rounded-xl h-full p-5'>
-                                <div className=' flex justify-between items-start'>
-                                    <div>
-                                        <h1 id='pa' className=' text-lg font-semibold mb-2'>Name of applicant</h1>
-                                        <h1 id='pa' className=' text-gray-500 mb-2'>Email ID</h1>
-                                        <p id='pa' className=' text-gray-500'>Phone Number</p>
-                                    </div>
-                                </div>
-                                <div className=' flex items-center mt-3'>
-                                    <span className=' p-1 px-2 bg-blue-900 text-white rounded'><a href="" download="">view resume</a></span>
-                                </div>
 
-                                <div className=' flex flex-wrap gap-3 items-center mt-5'>
-                                    <button className=' px-3 p-1 border border-red-600 text-red-600 rounded hover:scale-102'>Reject</button>
-                                    <button className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
-                                </div>
-                            </div>
+                                        <div className=' flex flex-wrap gap-3 items-center mt-5'>
+
+                                            {(app.status == "approved" || app.status == "approved-accepted" || app.status == "approved-rejected") &&
+                                                <span className=' px-3 p-1 border  border-green-600 bg-white text-green-600 rounded hover:scale-102'>Approved</span>
+                                            }
+
+                                            {app.status == "pending" &&
+                                                <button onClick={() => handleApproveApplication(app._id)} className=' px-3 p-1 border border-green-600 bg-green-600 text-white rounded hover:scale-102'>Approve</button>
+                                            }
+                                        </div>
+                                    </div>
+
+                                ))
+
+                            }
                         </div>
                     }
 

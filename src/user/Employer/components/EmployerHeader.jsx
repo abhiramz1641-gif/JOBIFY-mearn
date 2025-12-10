@@ -4,9 +4,15 @@ import { Link } from 'react-router-dom'
 const EmployerHeader = () => {
     return (
         <div className='bg-linear-to-r from-[#334ed6] to-[#1E1E2F]'>
-            <div className=' py-2 px-2 md:px-5 w-full grid grid-cols-2 items-center '>
+            <div className=' py-2 px-2 md:px-5 w-full grid grid-cols-2 md:grid-cols-3 items-center '>
                 <div className=' flex flex-col items-start'>
                     <img className=' h-16 md:h-20' src="./images/logo.png" alt="" />
+                </div>
+
+                <div className=' w-fit md:w-full glass-card hidden md:flex justify-between text-white text-sm lg:text-xl py-2 px-2 md:py-4 md:px-5'>
+                    <a href='/' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Home</a>
+                    <a href='/EmployerDashboard' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Dashboard</a>
+                    <a href='/jobApplications' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Applications</a>
                 </div>
 
 
@@ -15,6 +21,13 @@ const EmployerHeader = () => {
                     <Link to={'/login'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' hover:scale-103 p-1 sm:p-2 sm:px-2 md:px-4 rounded bg-white text-white font-semibold shadow-2xl shadow-black'>Log Out</button></Link>
                 </div>
             </div >
+            <div className=' md:hidden flex justify-center'>
+                <div style={{ borderRadius: "10px" }} className=' w-fit flex gap-10 glass-card text-white text-sm lg:text-xl py-2 px-2 md:py-4 md:px-4'>
+                    <a href='/' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Home</a>
+                    <a href='/EmployerDashboard' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Dashboard</a>
+                    <a href='/jobApplications' id='pa' className=' text-center hover:scale-105 hover:text-blue-50 font-semibold'>Applications</a>
+                </div>
+            </div>
         </div>
     )
 }

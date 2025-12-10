@@ -47,16 +47,7 @@ const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
                         }
                     </div>
                 </div>
-                <div className=' mt-3 border border-blue-400 rounded-xl py-5 bg-white'>
-
-                    <div>
-                        <h1 id='he' className=' mx-5 font-semibold'>Resume</h1>
-                    </div>
-                    <div className=' flex justify-center'>
-                        <label htmlFor="resume" className=' flex items-center'><FontAwesomeIcon className=' text-3xl text-blue-900' icon={faFile} /> <span className='hover:scale-103 p-2 rounded bg-blue-900 text-white font-semibold shadow-2xl shadow-gray-400'>Add Resume</span></label></div>
-                    <input className=' hidden' id='resume' name='resume' type="file" />
-
-                </div>
+                
 
             </div>
 

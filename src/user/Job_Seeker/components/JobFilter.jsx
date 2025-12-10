@@ -10,7 +10,7 @@ const JobFilter = ({ filterDetails, setFilterDetails }) => {
 
     const handleCheck = (key, value) => {
         setFilterDetails({ ...filterDetails, [key]: value });
-        console.log(filterDetails);
+        //console.log(filterDetails);
         
     };
 

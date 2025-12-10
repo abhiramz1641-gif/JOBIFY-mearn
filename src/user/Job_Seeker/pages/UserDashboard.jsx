@@ -8,7 +8,7 @@ import SidebarUser from '../components/SidebarUser'
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom'
 import ProfileEdit from '../components/ProfileEdit'
-import { getUserApi } from '../../../services/allApis'
+import { allApplicationsByUserMailApi, getUserApi, jobsApi } from '../../../services/allApis'
 
 const UserDashboard = () => {
 
@@ -26,6 +26,13 @@ const UserDashboard = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
+
+    const [jobArray, setJobArray] = useState([])
+
+    const [applications, setApplications] = useState([])
+
+    const [applicationsAcceptedCount, setApplicationsAccepted] = useState('')
+
 
 
 
@@ -70,12 +77,73 @@ const UserDashboard = () => {
 
     }
 
+    const getjobs = async () => {
+
+        const result = await jobsApi()
+        console.log(result.data);
+        setJobArray(result.data)
+
+    }
+
+    const getApplications = async (mail) => {
+
+        const body = {
+
+            userMail: mail
+
+        }
+
+        const result = await allApplicationsByUserMailApi(body)
+        console.log(result.data);
+        setApplications(result.data)
+
+        const arr = result.data
+
+        const a = arr.filter(item => item.status == "approved-accepted")
+
+        setApplicationsAccepted(a.length)
+
+    }
+
+    const handleScore = (e, s) => {
+
+
+        const je = e
+        const js = s
+
+        const ue = userDetails?.bio?.experience || 0
+        const us = userDetails?.bio?.skills
+
+        const total = je + js.length
+        console.log(total);
+
+        if (ue >= e) {
+            var es = 100
+        } else {
+            var es = (ue / je) * 100
+        }
+
+        const ms = js?.filter(jss => us?.some(uss => uss?.toLowerCase() == jss?.toLowerCase()))
+
+        const ss = (ms?.length / js?.length) * 100
+
+        const score = (es * 0.4) + (ss * 0.6)
+
+        const value = Math.round(score)
+
+        return value
+    }
+
+
+
 
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
         setEmail(mail)
         getUserData(mail)
+        getjobs()
+        getApplications(mail)
 
     }, [])
 
@@ -177,7 +245,8 @@ const UserDashboard = () => {
                                 </div>
                             </div>
 
-                            <div className=' hidden md:block'>
+                            <div className=' hidden md:flex justify-center gap-3'>
+                                <Link to={'/my-applications'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>My Applications <FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button></Link>
                                 <Link to={'/jobs'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply for Job <FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button></Link>
                             </div>
 
@@ -189,7 +258,8 @@ const UserDashboard = () => {
                             }
 
                         </div>
-                        <div className=' flex md:hidden justify-center mt-5'>
+                        <div className=' flex md:hidden justify-center gap-3 mt-5'>
+                            <Link to={'/my-applications'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>My Applications<FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button></Link>
                             <Link to={'/jobs'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply for Job<FontAwesomeIcon icon={faArrowUpRightFromSquare} /></button></Link>
                         </div>
                     </div>
@@ -199,21 +269,21 @@ const UserDashboard = () => {
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Application Sent</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>24</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{applications.length}</h1>
                                 <FontAwesomeIcon icon={faFile} className=' text-3xl' />
                             </div>
                         </div>
                         <div className=' mt-3 border bg-amber-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Active Jobs</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>159</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{jobArray.length}</h1>
                                 <FontAwesomeIcon icon={faBriefcase} className=' text-3xl' />
                             </div>
                         </div>
                         <div className=' mt-3 border bg-green-100 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Interviews</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>2</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{applicationsAcceptedCount}</h1>
                                 <FontAwesomeIcon icon={faCalendarWeek} className=' text-3xl' />
                             </div>
                         </div>
@@ -226,158 +296,49 @@ const UserDashboard = () => {
 
                     {/* recent 3 jobs posted */}
                     <div className=' grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-3 sm:px-10'>
+                        {jobArray.length > 0 &&
 
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
-                                <div className=' mb-2'>
-                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                </div>
-                            </div>
+                            jobArray.map((job, index) => (
 
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
+                                index < 3 &&
 
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
+                                <div key={index} className='border border-blue-400 rounded-xl h-full p-5'>
+                                    <div className=' flex flex-wrap justify-between items-center'>
+                                        <div>
+                                            <h1 id='pa' className=' text-lg font-semibold'>{job?.jobTitle}</h1>
+                                            <h1 id='pa' className=' text-gray-500 mb-2'>{job?.company}</h1>
+                                        </div>
+                                        <div className=' mb-2'>
+                                            <Link to={`/jobview/${job?._id},${handleScore(job?.experience, job?.skills)}`}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
+                                        </div>
+                                    </div>
 
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
-                                <div className=' flex flex-wrap justify-center items-center gap-3'>
-                                    <p>Profile Compatibility</p>
-                                    <div
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                            borderRadius: "50%",
-                                            background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            fontSize: "15px",
-                                            fontWeight: "bold"
-                                        }}
-                                    >
-                                        <span style={{
-                                            width: "40px",
-                                            height: "40px",
-                                            borderRadius: "50%"
-                                        }} className=' flex justify-center items-center bg-white'>{value}%</span>
+                                    <div className=' flex gap-2 mb-3 flex-wrap'>
+                                        {job?.skills?.map((item, index) => (
+
+                                            <div key={index} className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
+
+                                        ))
+
+                                        }
+                                    </div>
+
+                                    <div className=' mb-5'>
+                                        <p id='pa'>{job?.location}</p>
+                                        <p id='pa'>₹{job?.salary}</p>
+                                        <p id='pa'>{job?.experience} year</p>
+                                    </div>
+
+                                    <div className='items-center'>
+                                        <div>
+                                            <p id='pa' className=' text-gray-500'>{job?.jobType}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
-                                <div className=' mb-2'>
-                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                </div>
-                            </div>
 
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
+                            ))
 
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
-
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
-                                <div className=' flex flex-wrap justify-center items-center gap-3'>
-                                    <p>Profile Compatibility</p>
-                                    <div
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                            borderRadius: "50%",
-                                            background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            fontSize: "15px",
-                                            fontWeight: "bold"
-                                        }}
-                                    >
-                                        <span style={{
-                                            width: "40px",
-                                            height: "40px",
-                                            borderRadius: "50%"
-                                        }} className=' flex justify-center items-center bg-white'>{value}%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='border border-blue-400 rounded-xl h-full p-5'>
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <h1 id='pa' className=' text-lg font-semibold'>Senior Frontend Developer</h1>
-                                    <h1 id='pa' className=' text-gray-500 mb-2'>TechCorp Inc</h1>
-                                </div>
-                                <div className=' mb-2'>
-                                    <Link to={'/jobview'}><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>View <FontAwesomeIcon icon={faArrowRightFromBracket} /></button></Link>
-                                </div>
-                            </div>
-
-                            <div className=' flex gap-2 mb-3 flex-wrap'>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>React</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Type Script</div>
-                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>Tailwind</div>
-                            </div>
-
-                            <div className=' mb-5'>
-                                <p id='pa'>San Francisco, CA</p>
-                                <p id='pa'>$120k - $160k</p>
-                            </div>
-
-                            <div className=' flex flex-wrap justify-between items-center'>
-                                <div>
-                                    <p id='pa' className=' text-gray-500'>Full-time</p>
-                                </div>
-                                <div className=' flex flex-wrap justify-center items-center gap-3'>
-                                    <p>Profile Compatibility</p>
-                                    <div
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                            borderRadius: "50%",
-                                            background: `conic-gradient(#334ed6 ${value}%, #A4B3FF ${value}% 100%)`,
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            fontSize: "15px",
-                                            fontWeight: "bold"
-                                        }}
-                                    >
-                                        <span style={{
-                                            width: "40px",
-                                            height: "40px",
-                                            borderRadius: "50%"
-                                        }} className=' flex justify-center items-center bg-white'>{value}%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
+                        }
 
                     </div>
 

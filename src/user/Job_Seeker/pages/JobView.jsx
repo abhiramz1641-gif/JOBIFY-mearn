@@ -1,28 +1,219 @@
 import React, { useEffect, useState } from 'react'
 import UserHeader from '../components/UserHeader'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRightFromBracket, faFileArrowUp, faL } from '@fortawesome/free-solid-svg-icons'
 import { motion, AnimatePresence } from "framer-motion";
-import { jobsByIdApi } from '../../../services/allApis'
+import { appliedStatusApi, applyApplicationApi, jobsByIdApi } from '../../../services/allApis'
+import toast, { Toaster } from 'react-hot-toast'
 
 
 
 const JobView = () => {
 
-    const id = useParams()
-    console.log(id);
+    const i = useParams().id.split(',')[0]
+    const score = useParams().id.split(',')[1]
+    //console.log(idd)
+
+    const idd = {
+        id: i
+    }
+
+    //const [id,setId]=useState('')
+    const [email, setEmail] = useState('')
+
+    const nav = useNavigate()
 
     const [apply, setApply] = useState(false)
 
+    const [applied, setApplied] = useState(false)
+
     const [job, setJob] = useState({})
 
+    const [resume, setResume] = useState(null)
+
+    const [application, setApplication] = useState({
+        firstName: "",
+        lastName: "",
+        emailId: "",
+        phoneNumber: "",
+        resume: "",
+        jobId: "",
+        userMail: "",
+        status: "pending",
+        score
+    })
+
+    const getAppliedStatus = async (e) => {
+
+        const obj = {
+
+            jobId: idd.id,
+            userMail: e
+        }
+
+        const result = await appliedStatusApi(obj)
+        console.log(result);
+        if (result.status == 500) {
+            setApplied(true)
+        }
+    }
+
+
+    const handleDiscard = () => {
+
+        setApply(false)
+        setApplication({
+            firstName: "",
+            lastName: "",
+            emailId: "",
+            phoneNumber: "",
+            resume: "",
+            jobId: "",
+            userMail: "",
+            status: "pending",
+            score
+        })
+
+    }
+
+    const handleUpload = (e) => {
+
+        console.log(e.target.files[0]);
+
+        const file = e.target.files[0]
+
+        const url = URL.createObjectURL(file)
+        console.log(url);
+        setResume(file)
+
+    }
+
+    // const handleApply = async () => {
+
+    //     //const email = sessionStorage.getItem('email')
+
+    //     //console.log(email, i);
+
+    //     setApplication({ ...application, jobId: idd.id, userMail: email })
+
+    //     const finalData = {
+    //         ...application,
+    //         jobId: idd.id,
+    //         userMail: email
+    //     };
+
+    //     const { firstName, lastName, emailId, phoneNumber, resume, jobId, userMail, score } = finalData
+
+    //     //.................................reumeeee................not.......added......
+    //     if (firstName && lastName && emailId && phoneNumber && jobId && userMail) {
+
+    //         const result = await applyApplicationApi(finalData)
+    //         console.log(result);
+
+    //         if (result.status == 500) {
+    //             toast.error('Something went wrong.', {
+    //                 duration: 1500
+    //             })
+    //         } else if (result.status == 200) {
+    //             toast.success('Application send.', {
+    //                 duration: 1500
+    //             })
+    //             setApply(false)
+    //             setApplication({
+    //                 firstName: "",
+    //                 lastName: "",
+    //                 emailId: "",
+    //                 phoneNumber: "",
+    //                 resume: "",
+    //                 jobId: "",
+    //                 userMail: "",
+    //                 status:"pending",
+    //                 score
+    //             })
+    //         }
+
+    //     } else {
+
+    //         toast.error("Please fill all the fields", {
+    //             duration: 1500
+    //         })
+
+    //     }
+
+    //     setTimeout(() => {
+
+    //         nav('/jobs')
+
+    //     }, 1500);
+
+    // }
+
+    const handleApply = async () => {
+
+        if (!resume) {
+            toast.error("Please upload your resume", { duration: 1500 });
+            return;
+        }
+
+        const email = sessionStorage.getItem('email');
+
+        const finalData = {
+            ...application,
+            jobId: idd.id,
+            userMail: email
+        };
+
+        const { firstName, lastName, emailId, phoneNumber, jobId, userMail } = finalData;
+
+        if (!firstName || !lastName || !emailId || !phoneNumber || !jobId || !userMail) {
+            toast.error("Please fill all the fields", { duration: 1500 });
+            return;
+        }
+
+        
+        const formData = new FormData();
+        formData.append("firstName", firstName);
+        formData.append("lastName", lastName);
+        formData.append("emailId", emailId);
+        formData.append("phoneNumber", phoneNumber);
+        formData.append("jobId", jobId);
+        formData.append("userMail", userMail);
+        formData.append("status", "pending");
+        formData.append("score", score);
+        formData.append("resume", resume);   
+
+        const result = await applyApplicationApi(formData);
+
+        if (result?.status === 200) {
+            toast.success("Application sent.", { duration: 1500 });
+
+            setApply(false);
+            setApplication({
+                firstName: "",
+                lastName: "",
+                emailId: "",
+                phoneNumber: "",
+                resume: "",
+                jobId: "",
+                userMail: "",
+                status: "pending",
+                score
+            });
+        } else {
+            toast.error("Something went wrong.", { duration: 1500 });
+        }
+
+        setTimeout(() => {
+            nav('/jobs');
+        }, 1500);
+    };
 
 
 
     const getJob = async () => {
 
-        const result = await jobsByIdApi(id)
+        const result = await jobsByIdApi(idd)
         console.log(result);
         const jobb = result.data
         setJob(jobb)
@@ -34,6 +225,9 @@ const JobView = () => {
     useEffect(() => {
 
         getJob()
+        setEmail(sessionStorage.getItem('email'))
+        const mail = sessionStorage.getItem('email')
+        getAppliedStatus(mail)
 
     }, [])
 
@@ -134,7 +328,13 @@ const JobView = () => {
                         </div>
 
                         <div className=' flex justify-center'>
-                            <button onClick={() => setApply(true)} className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply <FontAwesomeIcon icon={faFileArrowUp} /></button>
+                            {applied ?
+                                <button onClick={() => setApply(true)} className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Apply <FontAwesomeIcon icon={faFileArrowUp} /></button>
+                                :
+                                <span className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-white text-blue-900
+                                 border border-blue-900 rounded'>You have already applied</span>
+
+                            }
                         </div>
 
                     </div>
@@ -175,32 +375,43 @@ const JobView = () => {
 
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>First Name</h1>
-                                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='First Name' />
+                                    <input type="text" value={application.firstName} onChange={(e) => setApplication({ ...application, firstName: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='First Name' />
                                 </div>
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>Last Name</h1>
-                                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Last Name' />
+                                    <input type="text" value={application.lastName} onChange={(e) => setApplication({ ...application, lastName: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Last Name' />
                                 </div>
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>Email</h1>
-                                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
+                                    <input type="text" value={application.emailId} onChange={(e) => setApplication({ ...application, emailId: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
                                 </div>
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-1'>Phone</h1>
-                                    <input type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Phone' />
+                                    <input type="text" value={application.phoneNumber} onChange={(e) => setApplication({ ...application, phoneNumber: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Phone' />
                                 </div>
                                 <div className=' mb-5'>
                                     <h1 id='he' className=' font-semibold mb-2'>Upload Resume</h1>
 
                                     <div className=' flex flex-wrap items-center mt-1'>
                                         <label htmlFor="fl" className=' bg-blue-900 text-white px-4 p-2 rounded-lg hover:scale-102'>Select File</label>
-                                        <input type="file" id='fl' className=' hidden border p-0.5 border-blue-900 rounded-r-lg' placeholder=' file' />
+                                        <input onChange={(e) => handleUpload(e)} type="file" id='fl' className=' hidden border p-0.5 border-blue-900 rounded-r-lg' placeholder=' file' />
+                                        <button
+                                            onClick={() => {
+                                                if (resume) {
+                                                    const url = URL.createObjectURL(resume);
+                                                    window.open(url, "_blank");
+                                                }
+                                            }}
+                                            className=" ms-1 border border-blue-900 text-blue-900 px-4 p-2 rounded-lg hover:scale-102"
+                                        >
+                                            Preview Resume
+                                        </button>
                                     </div>
                                 </div>
 
                                 <div className=' flex gap-3 mt-10'>
-                                    <button onClick={() => setApply(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
-                                    <button onClick={() => setApply(false)} className=' px-2 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Submit</button>
+                                    <button onClick={handleDiscard} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button>
+                                    <button onClick={handleApply} className=' px-2 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Submit</button>
                                 </div>
 
 
@@ -210,6 +421,12 @@ const JobView = () => {
                 </motion.div>
 
             </div>
+
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
         </div>
     )
