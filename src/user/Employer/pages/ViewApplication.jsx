@@ -13,6 +13,8 @@ const ViewApplication = () => {
 
     const [applications, setApplications] = useState([])
 
+
+
     // const value = 93
 
     const handleNoOfApplications = async (id) => {
@@ -24,7 +26,9 @@ const ViewApplication = () => {
         const result = await allApplicationsByJobIdApi(body)
         console.log(result);
 
-        setApplications(result.data)
+        const a = result.data.sort((a, b) => b.score - a.score);
+
+        setApplications(a)
 
     }
 
@@ -40,7 +44,9 @@ const ViewApplication = () => {
 
         if (result.status == 200) {
 
-            setApplications(result.data)
+            const a = result.data.sort((a, b) => b.score - a.score);
+
+            setApplications(a)
 
         }
 
@@ -58,7 +64,10 @@ const ViewApplication = () => {
 
         if (result.status == 200) {
 
-            setApplications(result.data)
+            const a = result.data.sort((a, b) => b.score - a.score);
+
+            setApplications(a)
+
 
         }
 
@@ -86,6 +95,12 @@ const ViewApplication = () => {
                         <div className='p-5 flex items-center gap-5'>
 
                             <h1 id='he' className=' font-semibold text-2xl'>Applications Count: {applications.filter(item => item.status.includes("approved")).length} </h1>
+                        </div>
+
+                        <div className=' px-5 mb-2'>
+
+                            <p id='pa' className=' text-xl'>Sorted Based on Compatibility</p>
+
                         </div>
 
 

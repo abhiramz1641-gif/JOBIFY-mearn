@@ -15,7 +15,6 @@ export const loginApi = async (reqBody) => {
 
 }
 
-
 //get user
 export const getUserApi = async (reqBody) => {
 
@@ -29,7 +28,6 @@ export const editUserApi = async (reqBody) => {
    return await commonApi("put", `${serverURL}/user-edit`, reqBody)
 
 }
-
 
 // post job
 export const jobPostApi = async (reqBody) => {
@@ -101,14 +99,12 @@ export const appliedStatusApi = async (reqBody) => {
 
 }
 
-
 // all applications
 export const allApplicationsApi = async () => {
 
    return await commonApi("get", `${serverURL}/get-applications`, ' ')
 
 }
-
 
 // applications by jobId
 export const allApplicationsByJobIdApi = async (reqBody) => {
@@ -130,7 +126,6 @@ export const employerApplicationAcceptenceApi = async (reqBody) => {
    return await commonApi("put", `${serverURL}/employer-application-acceptence`, reqBody)
 
 }
-
 
 // employer application reject
 export const employerApplicationRejectApi = async (reqBody) => {

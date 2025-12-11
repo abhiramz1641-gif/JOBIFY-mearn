@@ -1,6 +1,6 @@
 import React, { useEffect, useEffectEvent, useState } from 'react'
 import UserHeader from '../components/UserHeader'
-import { faArrowRightFromBracket, faArrowUpRightFromSquare, faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faArrowUpRightFromSquare, faCaretRight, faMagnifyingGlass, faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import JobFilter from '../components/JobFilter'
 import { AnimatePresence, motion } from "framer-motion";
@@ -349,6 +349,11 @@ const JobSearch = () => {
                         <div className='p-5 flex items-center gap-5'>
                             <div className=' md:hidden'><button onClick={() => setFilter(true)} className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Filters</button></div>
                             <h1 id='he' className=' font-semibold text-2xl'>Recent Job Listing</h1>
+                        </div>
+
+                        <div className=' px-5 mb-3'>
+                            <h1 id='he' className=' text-xl mb-2'>Make your Job hunt easier with just <span className=' text-blue-600  font-bold'>1 Click!</span></h1>
+                            <Link to={'/automated-job-search'}><button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' hover:scale-101 p-2 px-8 rounded text-white font-semibold '>Automated Job Hunt <FontAwesomeIcon icon={faCaretRight} /></button></Link>
                         </div>
 
                         <div className=' pb-5 px-5 flex justify-center items-center'>

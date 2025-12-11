@@ -3,13 +3,15 @@ import { faArrowRightFromBracket, faMagnifyingGlass, faPenToSquare, faX } from '
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EmployerHeader from '../components/EmployerHeader';
-import { allApplicationsByJobIdApi, jobsByEmployerApi } from '../../../services/allApis';
+import { allApplicationsApi, allApplicationsByJobIdApi, jobsByEmployerApi } from '../../../services/allApis';
 
 
 const JobApplications = () => {
 
 
     const [jobs, setJobs] = useState([])
+
+    const [applications, setApplications] = useState([])
 
 
 
@@ -27,12 +29,36 @@ const JobApplications = () => {
 
     }
 
+    const getApplications = async () => {
+
+        const result = await allApplicationsApi()
+        console.log(result);
+        if (result.status == 200) {
+
+            const a = result.data.map(item => item.jobId)
+
+            setApplications(result.data)
+
+        }
+
+    }
+    console.log(applications);
+
+    const handleCount=(id)=>{
+
+        const a=applications.filter(item=>item.jobId==id && item.status.includes("approved"))
+        console.log(a);
+        
+        return a.length
+
+    }
 
 
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
         getJobs(mail)
+        getApplications()
 
     }, [])
 
@@ -52,17 +78,20 @@ const JobApplications = () => {
                             <h1 id='he' className=' font-semibold text-2xl'>Applications Received For Jobs</h1>
                         </div>
 
-                        <div className=' pb-5 px-5 flex justify-center items-center'>
+                        {/* <div className=' pb-5 px-5 flex justify-center items-center'>
                             <input type="text" className=' bg-white border border-blue-300 rounded-l-lg p-1 px-2' placeholder='Job Title' />
                             <button className='text-white border border-blue-900 rounded-r-lg px-3 py-1 bg-blue-900 hover:scale-102'>Search <FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                        </div>
+                        </div> */}
 
                         <div className=' grid lg:grid-cols-2 px-5 gap-5'>
                             {jobs.length > 0 &&
 
                                 jobs.map((job, index) => (
 
-                                    <div className='border border-blue-400 rounded-xl h-full p-5'>
+                                    <div key={index} className='border border-blue-400 rounded-xl h-full p-5'>
+                                        <div className=' bg-blue-300 w-fit px-4 p-1 rounded-xl mb-3'>
+                                            <h1 id='he' className=' font-semibold'>Applications Received : <span className=' font-bold text-xl'>{handleCount(job?._id)}</span></h1>
+                                        </div>
                                         <div>
                                             <h1 id='pa' className=' text-lg font-semibold'>{job?.jobTitle}</h1>
                                             <h1 id='pa' className=' text-gray-500 mb-2'>{job?.company}</h1>

@@ -12,6 +12,7 @@ import JobPost from "./user/Employer/pages/JobPost"
 import ViewApplication from "./user/Employer/pages/ViewApplication"
 import AdminDashbord from "./Admin/pages/AdminDashbord"
 import MyApplications from "./user/Job_Seeker/pages/myApplications"
+import AutomatedJobSearch from "./user/Job_Seeker/pages/AutomatedJobSearch"
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/jobs" element={<JobSearch />} />
         <Route path="/jobview/:id" element={<JobView/>} />
         <Route path="/my-applications" element={<MyApplications/>} />
+        <Route path="/automated-job-search" element={<AutomatedJobSearch/>} />
 
         {/* employer */}
         <Route path="/EmployerDashboard" element={<EmployerDashboard/>} />
