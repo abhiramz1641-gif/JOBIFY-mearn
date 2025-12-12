@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EmployerHeader from '../components/EmployerHeader'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +7,8 @@ import { jobPostApi } from '../../../services/allApis'
 const JobPost = () => {
 
   const nav = useNavigate()
+
+  const [token, setToken] = useState('')
 
   const [job, setJob] = useState({
 
@@ -21,6 +23,7 @@ const JobPost = () => {
 
   })
 
+  
   const handleskill = (skills) => {
 
     const s = skills.split(',')
@@ -31,6 +34,10 @@ const JobPost = () => {
 
   const handlePost = async () => {
 
+    const reqHeader = {
+      'Authorization': `Bearer ${token}`
+    }
+
     const mail = sessionStorage.getItem("email")
 
     const jobToPost = { ...job, employerMail: mail }
@@ -39,7 +46,7 @@ const JobPost = () => {
 
     if (jobTitle && company && description && skills[0] != '' && location && salary && jobType && employerMail) {
 
-      const result = await jobPostApi(jobToPost)
+      const result = await jobPostApi(jobToPost,reqHeader)
       console.log(result);
 
       if (result.status === 200) {
@@ -92,13 +99,20 @@ const JobPost = () => {
       salary: "",
       jobType: "",
       employerMail: "",
-      experience:''
+      experience: ''
 
     })
 
     nav('/EmployerDashboard')
 
   }
+
+  useEffect(() => {
+
+    const token = sessionStorage.getItem('token')
+    setToken(token)
+
+  }, [])
 
 
 
@@ -146,8 +160,8 @@ const JobPost = () => {
           <input type="text" value={job.location} onChange={(e) => setJob({ ...job, location: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Job Location' />
         </div>
         <div className=' mb-5'>
-          <h1 id='he' className=' font-semibold mb-1'>Salary Range</h1>
-          <input type="text" value={job.salary} onChange={(e) => setJob({ ...job, salary: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Salary Range' />
+          <h1 id='he' className=' font-semibold mb-1'>Minimum Salary</h1>
+          <input type="text" onChange={(e) => setJob({ ...job, salary: e.target.value })} className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Salary Range' />
         </div>
         <div className=' mb-5'>
           <h1 id='he' className=' font-semibold mb-1'>Job Type</h1>

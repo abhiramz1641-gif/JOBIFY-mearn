@@ -15,6 +15,8 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
 
     // },[])
 
+    const [token,setToken]=useState('')
+
     const handleSkill = (skills) => {
 
         const s = skills.split(',')
@@ -24,7 +26,11 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
 
     const handleEdit = async () => {
 
-        const result = await editUserApi(userDetails)
+        const reqHeader = {
+            'Authorization': `Bearer ${token}`
+        }
+
+        const result = await editUserApi(userDetails,reqHeader)
         if (result.status == 200) {
 
             toast.success('Saved Changes.', {
@@ -43,6 +49,13 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
             setEdit(false)
         }, 1000)
     }
+
+    useEffect(()=>{
+
+        const token=sessionStorage.getItem('token')
+        setToken(token)
+
+    },[])
 
 
 

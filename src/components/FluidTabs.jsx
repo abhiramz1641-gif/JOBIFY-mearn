@@ -22,7 +22,7 @@ export const FluidTabs = ({ tabs, onTabChange }) => {
             className={`flex-1 py-2.5 px-4 text-sm font-medium rounded-md transition-all duration-300 relative z-10 ${
               activeIndex === index
                 ? "text-white"
-                : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                : " text-gray-400 hover:text-gray-100"
             }`}
           >
             <span> { 
@@ -35,7 +35,7 @@ export const FluidTabs = ({ tabs, onTabChange }) => {
         ))}
       </div>
 
-      {/* Sliding Indicator */}
+
       <div
         className="absolute top-1 bottom-1 rounded-md transition-all duration-300 ease-out shadow-md"
         style={{

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import SidebarEmployer from '../components/SidebarEmployer';
 import EmployerHeader from '../components/EmployerHeader';
 import EmployerProfileEdit from '../components/EmployerProfileEdit';
-import { getUserApi, jobsPostedApi } from '../../../services/allApis';
+import { allApplicationsApi, allApplicationsByUserMailApi, getUserApi, jobsPostedApi } from '../../../services/allApis';
 
 const EmployerDashboard = () => {
 
@@ -21,6 +21,10 @@ const EmployerDashboard = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
+
+    const [applications, setApplications] = useState([])
+    
+    const [interview, setInterview] = useState([])
 
     const [jobs, setJobs] = useState([])
 
@@ -44,18 +48,21 @@ const EmployerDashboard = () => {
         else {
             setMenuOpen(false)
         }
-        console.log("Button is now:", open ? "OPEN" : "CLOSED");
+        //console.log("Button is now:", open ? "OPEN" : "CLOSED");
 
     };
 
-    const getUserData = async (mail) => {
+    const getUserData = async (mail, t) => {
 
         const mailId = {
             email: mail
         }
         console.log(mailId);
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await getUserApi(mailId)
+        const result = await getUserApi(mailId, reqHeader)
 
         console.log(result.data.existingUser);
 
@@ -63,18 +70,19 @@ const EmployerDashboard = () => {
 
     }
 
+    const getPostedJobs = async (email, t) => {
 
-
-    const getPostedJobs = async () => {
-
-        const email = sessionStorage.getItem("email")
         //console.log(email);
         const mail = {
             email: email
         }
         //console.log(mail);
 
-        const result = await jobsPostedApi(mail)
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await jobsPostedApi(mail, reqHeader)
         console.log(result);
         if (result.status === 200) {
 
@@ -85,15 +93,62 @@ const EmployerDashboard = () => {
 
     }
 
+    const getApplications = async (mail, t) => {
+
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await allApplicationsApi(reqHeader)
+        //console.log(result.data);
+        const a = result.data
+
+        const m = {
+            email: mail
+        }
+        const r = await jobsPostedApi(m, reqHeader)
+        //console.log(r);
+        const job = r.data
+        const ji = job.filter(item => item.employerMail == mail).map(i => i._id)
+        //console.log(ji);
+
+        //console.log(a);
+        var applicationArray=[]
+        for (let id of ji) {
+
+            a.forEach(appl=>{
+                if(appl.jobId==id){
+                    applicationArray.push(appl)
+                }
+            })
+        }
+        //console.log(applicationArray);
+        setApplications(applicationArray)
+
+        var interArray=[]
+
+        applicationArray.forEach(item=>{
+
+            item.status=="approved-accepted"&&interArray.push(item)
+
+        })
+
+        setInterview(interArray)
+
+
+    }
+
 
 
 
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
         setEmail(mail)
-        getUserData(mail)
-        getPostedJobs()
+        getUserData(mail, token)
+        getPostedJobs(mail, token)
+        getApplications(mail, token)
 
     }, [])
 
@@ -216,21 +271,21 @@ const EmployerDashboard = () => {
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Jobs Posted</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{jobs.length}</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{jobs?.length}</h1>
                                 <FontAwesomeIcon icon={faBriefcase} className=' text-3xl' />
                             </div>
                         </div>
                         <div className=' mt-3 border bg-amber-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Applications Received</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>54</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{applications?.length}</h1>
                                 <FontAwesomeIcon icon={faFile} className=' text-3xl' />
                             </div>
                         </div>
                         <div className=' mt-3 border bg-green-100 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Interviews Scheduled</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>2</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{interview?.length}</h1>
                                 <FontAwesomeIcon icon={faCalendarWeek} className=' text-3xl' />
                             </div>
                         </div>
@@ -260,9 +315,9 @@ const EmployerDashboard = () => {
                                     </div>
 
                                     <div className=' flex gap-2 mb-3 flex-wrap'>
-                                        {job.skills.map(item => (
+                                        {job.skills.map((item, index) => (
 
-                                            <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
+                                            <div key={index} className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
 
                                         ))
 

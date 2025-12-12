@@ -36,9 +36,9 @@ const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
                     <div className=' grid grid-cols-2 gap-1 p-3'>
                         {userDetails.bio.skills.length > 0 &&
 
-                            userDetails.bio.skills.map(item => (
+                            userDetails.bio.skills.map((item,index) => (
 
-                                <div className=' text-center rounded bg-blue-200 p-2'>
+                                <div key={index} className=' text-center rounded bg-blue-200 p-2'>
                                     <p id='pa'>{item}</p>
                                 </div>
 

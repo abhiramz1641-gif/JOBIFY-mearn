@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import SidebarAdmin from '../components/SidebarAdmin';
 import AdminHeader from '../components/AdminHeader';
 import AdminProfileEdit from '../components/AdminProfileEdit';
-import { adminApplicationApprovalApi, adminJobApprovalApi, allApplicationsApi, getUserApi, jobsApi } from '../../services/allApis';
+import { adminApplicationApprovalApi, adminJobApprovalApi, adminJobsApi, allApplicationsAdminApi, allApplicationsApi, getAdminUserApi, getUserApi, jobsApi } from '../../services/allApis';
 const AdminDashbord = () => {
 
 
@@ -15,10 +15,13 @@ const AdminDashbord = () => {
 
     const [email, setEmail] = useState('')
 
+    const [token, setToken] = useState('')
+
     const [userDetails, setUserDetails] = useState({})
 
 
     const [application, setApplications] = useState(false)
+
     const [jobs, setJobs] = useState(true)
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -64,31 +67,31 @@ const AdminDashbord = () => {
         setApplications(true)
     }
 
-    const handleApprove = async (id) => {
+    const getjobs = async (t) => {
 
-        const result = await adminJobApprovalApi({ id })
-        setAllJobs(result.data)
-        await getjobs()
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-    }
-
-    const getjobs = async () => {
-
-        const result = await jobsApi()
+        const result = await adminJobsApi(reqHeader)
         console.log(result.data);
         setAllJobs(result.data)
 
     }
 
-    const getUserData = async (mail) => {
+    const getUserData = async (mail,t) => {
 
         const mailId = {
             email: mail
         }
         console.log(mailId);
 
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await getUserApi(mailId)
+
+        const result = await getAdminUserApi(mailId,reqHeader)
 
         console.log(result.data.existingUser);
 
@@ -97,9 +100,13 @@ const AdminDashbord = () => {
 
     }
 
-    const getApplication = async () => {
+    const getApplication = async (t) => {
 
-        const result = await allApplicationsApi()
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await allApplicationsAdminApi(reqHeader)
         console.log(result.data);
         setAllApplication(result.data)
 
@@ -107,26 +114,49 @@ const AdminDashbord = () => {
 
     const handleApproveApplication = async (id) => {
 
-        const result = await adminApplicationApprovalApi({ id })
+        const reqHeader = {
+            'Authorization': `Bearer ${token}`
+        }
+
+        const result = await adminApplicationApprovalApi({ id },reqHeader)
         console.log(result);
-        await getApplication()
+        await getApplication(token)
 
     }
+
+    const handleApproveJob = async (id) => {
+
+        const reqHeader = {
+            'Authorization': `Bearer ${token}`
+        }
+
+        const result = await adminJobApprovalApi({ id },reqHeader)
+        setAllJobs(result.data)
+        await getjobs(token)
+
+    }
+
+
+    // useEffect(() => {
+
+    //     const mail = sessionStorage.getItem('email')
+    //     setEmail(mail)
+    //     getUserData(mail)
+
+    // }, [])
 
 
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
         setEmail(mail)
-        getUserData(mail)
 
-    }, [])
+        const token=sessionStorage.getItem('token')
+        setToken(token)
 
-
-    useEffect(() => {
-
-        getjobs()
-        getApplication()
+        getUserData(mail,token)
+        getjobs(token)
+        getApplication(token)
 
     }, [])
 
@@ -238,7 +268,7 @@ const AdminDashbord = () => {
                         <div className=' mt-3 border bg-blue-50 border-blue-400 rounded-xl h-full p-5'>
                             <p id='pa' className=' text-xl text-gray-500'>Jobs Posted</p>
                             <div className=' flex justify-between items-center'>
-                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{allJobs.length}</h1>
+                                <h1 id='he' className=' mt-2 text-2xl font-bold'>{allJobs?.length}</h1>
                                 <FontAwesomeIcon icon={faBriefcase} className=' text-3xl' />
                             </div>
                         </div>
@@ -265,8 +295,6 @@ const AdminDashbord = () => {
 
                         allJobs.length > 0 &&
 
-
-
                         <div className=' bg-blue-900 mx-5 rounded-2xl py-5 md:py-10 grid lg:grid-cols-2 px-5 md:px-10 gap-5'>
                             {
                                 allJobs.map((job, index) => (
@@ -278,9 +306,9 @@ const AdminDashbord = () => {
                                         </div>
 
                                         <div className=' flex gap-2 mb-3 flex-wrap'>
-                                            {job.skills.map(item => (
+                                            {job.skills.map((item,index) => (
 
-                                                <div className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
+                                                <div key={index} className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
 
                                             ))
 
@@ -300,7 +328,7 @@ const AdminDashbord = () => {
                                             {job.status == "approved" ?
                                                 <span className=' px-3 p-1 border  border-green-600 bg-white text-green-600 rounded hover:scale-102'>Approved</span>
                                                 :
-                                                <button onClick={() => handleApprove(job._id)} className=' px-3 p-1 border border-green-600 text-green-600 rounded hover:scale-102'>Approve</button>
+                                                <button onClick={() => handleApproveJob(job._id)} className=' px-3 p-1 border bg-green-600 text-white rounded hover:scale-102'>Approve</button>
                                             }
                                         </div>
                                     </div>
@@ -309,7 +337,6 @@ const AdminDashbord = () => {
                             }
 
                         </div>
-
 
                     }
 

@@ -29,13 +29,17 @@ const JobApplications = () => {
 
     }
 
-    const getApplications = async () => {
+    const getApplications = async (t) => {
 
-        const result = await allApplicationsApi()
-        console.log(result);
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await allApplicationsApi(reqHeader)
+        //console.log(result);
         if (result.status == 200) {
 
-            const a = result.data.map(item => item.jobId)
+            //const a = result.data.map(item => item.jobId)
 
             setApplications(result.data)
 
@@ -47,7 +51,7 @@ const JobApplications = () => {
     const handleCount=(id)=>{
 
         const a=applications.filter(item=>item.jobId==id && item.status.includes("approved"))
-        console.log(a);
+        //console.log(a);
         
         return a.length
 
@@ -57,8 +61,9 @@ const JobApplications = () => {
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
         getJobs(mail)
-        getApplications()
+        getApplications(token)
 
     }, [])
 

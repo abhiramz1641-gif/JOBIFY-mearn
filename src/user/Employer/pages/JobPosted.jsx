@@ -9,7 +9,7 @@ const JobPosted = () => {
     const [jobs, setJobs] = useState([])
 
 
-    const getPostedJobs = async () => {
+    const getPostedJobs = async (t) => {
 
         const email = sessionStorage.getItem("email")
         //console.log(email);
@@ -17,8 +17,11 @@ const JobPosted = () => {
             email: email
         }
         //console.log(mail);
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await jobsPostedApi(mail)
+        const result = await jobsPostedApi(mail,reqHeader)
         console.log(result);
         if (result.status === 200) {
 
@@ -33,7 +36,8 @@ const JobPosted = () => {
 
     useEffect(() => {
 
-        getPostedJobs()
+        const token = sessionStorage.getItem('token')
+        getPostedJobs(token)
 
     }, [])
 

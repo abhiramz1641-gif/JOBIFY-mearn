@@ -1,15 +1,20 @@
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { editUserApi } from '../../services/allApis'
 
 const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
 
+    const [token, setToken] = useState('')
 
     const handleEdit = async () => {
 
-        const result = await editUserApi(userDetails)
+        const reqHeader = {
+            'Authorization': `Bearer ${token}`
+        }
+
+        const result = await editUserApi(userDetails,reqHeader)
         if (result.status == 200) {
 
             toast.success('Saved Changes.', {
@@ -29,6 +34,13 @@ const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
         }, 1000)
 
     }
+
+    useEffect(() => {
+
+        const token = sessionStorage.getItem('token')
+        setToken(token)
+
+    }, [])
 
     return (
         <div style={{ overflowX: "hidden", overflowY: "auto", zIndex: "50" }} className=' border h-fit sm:h-2/3 sm:w-1/2 w-6/7 rounded-2xl bg-white'>

@@ -17,6 +17,7 @@ const UserDashboard = () => {
     const value = 75
 
     const [email, setEmail] = useState('')
+    const [token, setToken] = useState('')
 
     const [userDetails, setUserDetails] = useState({})
 
@@ -50,50 +51,63 @@ const UserDashboard = () => {
     const handleToggle = (open) => {
 
         setMenuOpen(open);
-        if (open) {
-            setMenuOpen(true)
-        }
-        else {
-            setMenuOpen(false)
-        }
-        console.log("Button is now:", open ? "OPEN" : "CLOSED");
+        // if (open) {
+        //     setMenuOpen(true)
+        // }
+        // else {
+        //     setMenuOpen(false)
+        // }
+        //console.log("Button is now:", open ? "OPEN" : "CLOSED");
 
     };
 
-    const getUserData = async (mail) => {
+    const getUserData = async (mail, t) => {
 
         const mailId = {
             email: mail
         }
         console.log(mailId);
 
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await getUserApi(mailId)
+
+        const result = await getUserApi(mailId,reqHeader)
 
         console.log(result.data.existingUser);
 
-        setUserDetails(result.data.existingUser)
+        if (result.status == 200) {
+            setUserDetails(result.data.existingUser)
+        }
 
 
     }
 
-    const getjobs = async () => {
+    const getjobs = async (t) => {
 
-        const result = await jobsApi()
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await jobsApi(reqHeader)
         console.log(result.data);
         setJobArray(result.data)
 
     }
 
-    const getApplications = async (mail) => {
+    const getApplications = async (mail, t) => {
 
         const body = {
 
             userMail: mail
 
         }
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await allApplicationsByUserMailApi(body)
+        const result = await allApplicationsByUserMailApi(body,reqHeader)
         console.log(result.data);
         setApplications(result.data)
 
@@ -115,7 +129,7 @@ const UserDashboard = () => {
         const us = userDetails?.bio?.skills
 
         const total = je + js.length
-        console.log(total);
+        //console.log(total);
 
         if (ue >= e) {
             var es = 100
@@ -140,10 +154,12 @@ const UserDashboard = () => {
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
+        setToken(token)
         setEmail(mail)
-        getUserData(mail)
-        getjobs()
-        getApplications(mail)
+        getUserData(mail, token)
+        getjobs(token)
+        getApplications(mail, token)
 
     }, [])
 

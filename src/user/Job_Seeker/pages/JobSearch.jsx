@@ -12,6 +12,8 @@ const JobSearch = () => {
 
     const [email, setEmail] = useState('')
 
+    const [token, setToken] = useState('')
+
     const [userDetails, setUserDetails] = useState({})
 
     const [allJobs, setAllJobs] = useState([])
@@ -227,15 +229,19 @@ const JobSearch = () => {
 
     };
 
-    const getUserData = async (mail) => {
+    const getUserData = async (mail,t) => {
 
         const mailId = {
             email: mail
         }
         //console.log(mailId);
 
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await getUserApi(mailId)
+
+        const result = await getUserApi(mailId,reqHeader)
 
         //console.log(result.data.existingUser);
 
@@ -282,9 +288,13 @@ const JobSearch = () => {
 
     }
 
-    const getjobs = async () => {
+    const getjobs = async (t) => {
 
-        const result = await jobsApi()
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await jobsApi(reqHeader)
         //console.log(result.data);
         setAllJobs(result.data)
         setJobArray(result.data)
@@ -305,11 +315,13 @@ const JobSearch = () => {
 
     useEffect(() => {
 
-        getjobs()
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
+        getjobs(token)
+        setToken(token)
         setEmail(mail)
-        getUserData(mail)
+        getUserData(mail,token)
 
         //handleFilter()
 

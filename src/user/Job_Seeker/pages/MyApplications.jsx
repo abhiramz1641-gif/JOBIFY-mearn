@@ -15,15 +15,18 @@ const MyApplications = () => {
     const [job, setJob] = useState({})
 
 
-    const getApplications = async (mail) => {
+    const getApplications = async (mail,t) => {
 
         const body = {
 
             userMail: mail
 
         }
+        const reqHeader={
+            'Authorization':`Bearer ${t}`
+        }
 
-        const result = await allApplicationsByUserMailApi(body)
+        const result = await allApplicationsByUserMailApi(body,reqHeader)
         console.log(result.data);
         setApplications(result.data)
 
@@ -57,8 +60,9 @@ const MyApplications = () => {
     useEffect(() => {
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
 
-        getApplications(mail)
+        getApplications(mail,token)
 
     }, [])
 

@@ -186,6 +186,9 @@ const AutomatedJobSearch = () => {
 
             if (result?.status === 200) {
                 toast.success(`Applied for ${job.jobTitle}`, { duration: 1200 });
+            } 
+            else {
+                toast.error(`Already applied for ${job.jobTitle}`, { duration: 1200 });
             }
         }
 
@@ -236,8 +239,6 @@ const AutomatedJobSearch = () => {
 
     }
 
-
-
     const handleJobSelect = (id, checked, score) => {
 
         if (checked) {
@@ -250,15 +251,18 @@ const AutomatedJobSearch = () => {
     }
     //console.log(selectedJobs);
 
-    const getUserData = async (mail) => {
+    const getUserData = async (mail, t) => {
 
         const mailId = {
             email: mail
         }
         //console.log(mailId);
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
 
-        const result = await getUserApi(mailId)
+        const result = await getUserApi(mailId, reqHeader)
 
         //console.log(result.data.existingUser);
 
@@ -267,23 +271,30 @@ const AutomatedJobSearch = () => {
 
     }
 
-    const getApplications = async (mail) => {
+    const getApplications = async (mail, t) => {
 
         const body = {
 
             userMail: mail
 
         }
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
 
-        const result = await allApplicationsByUserMailApi(body)
+        const result = await allApplicationsByUserMailApi(body, reqHeader)
         console.log(result.data);
         setApplications(result.data)
 
     }
 
-    const getjobs = async () => {
+    const getjobs = async (t) => {
 
-        const result = await jobsApi()
+        const reqHeader = {
+            'Authorization': `Bearer ${t}`
+        }
+
+        const result = await jobsApi(reqHeader)
         //console.log(result.data);
         setAllJobs(result.data)
 
@@ -329,12 +340,14 @@ const AutomatedJobSearch = () => {
 
     useEffect(() => {
 
-        getjobs()
+
 
         const mail = sessionStorage.getItem('email')
+        const token = sessionStorage.getItem('token')
         setEmail(mail)
-        getUserData(mail)
-        getApplications(mail)
+        getUserData(mail, token)
+        getjobs(token)
+        getApplications(mail, token)
 
 
     }, [])

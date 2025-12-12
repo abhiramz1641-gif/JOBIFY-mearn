@@ -141,6 +141,7 @@ const LoginPage = () => {
 
                     sessionStorage.setItem("id", result.data.existingUser._id)
                     sessionStorage.setItem("email", result.data.existingUser.email)
+                    sessionStorage.setItem("token", result.data.token)
 
                     setUserDetails({
                         username: "",

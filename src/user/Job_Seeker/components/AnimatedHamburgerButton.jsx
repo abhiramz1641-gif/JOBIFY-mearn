@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MotionConfig, motion } from "framer-motion";
 
 const AnimatedHamburgerButton = ({ onToggle }) => {
   const [active, setActive] = useState(false);
 
+  // const handleClick = () => {
+  //   setActive((prev) => {
+  //     const newState = !prev;
+  //     // passed to parent
+  //     if (onToggle) onToggle(newState);
+  //     return newState;
+  //   });
+  // };
+
   const handleClick = () => {
-    setActive((prev) => {
-      const newState = !prev;
-      // passed to parent
-      if (onToggle) onToggle(newState);
-      return newState;
-    });
+    setActive(prev => !prev); 
   };
+
+  useEffect(() => {
+    if (onToggle) {
+      onToggle(active);
+    }
+  }, [active, onToggle]);
 
   return (
     <MotionConfig
