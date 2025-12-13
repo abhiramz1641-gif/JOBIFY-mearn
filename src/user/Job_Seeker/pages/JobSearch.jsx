@@ -464,7 +464,7 @@ const JobSearch = () => {
                                             <div>
                                                 <p id='pa' className=' text-gray-500'>{job?.jobType}</p>
                                             </div>
-                                            <div className=' flex justify-center items-center gap-3'>
+                                            <div className=' flex flex-wrap justify-center items-center gap-3'>
                                                 <p>Profile Compatibility</p>
                                                 <div
                                                     style={{

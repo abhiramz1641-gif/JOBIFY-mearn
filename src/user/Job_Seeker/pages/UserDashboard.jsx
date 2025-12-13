@@ -17,7 +17,10 @@ const UserDashboard = () => {
     const value = 75
 
     const [email, setEmail] = useState('')
+
     const [token, setToken] = useState('')
+
+    const [preview, setPreview] = useState('')
 
     const [userDetails, setUserDetails] = useState({})
 
@@ -73,7 +76,7 @@ const UserDashboard = () => {
         }
 
 
-        const result = await getUserApi(mailId,reqHeader)
+        const result = await getUserApi(mailId, reqHeader)
 
         console.log(result.data.existingUser);
 
@@ -107,7 +110,7 @@ const UserDashboard = () => {
             'Authorization': `Bearer ${t}`
         }
 
-        const result = await allApplicationsByUserMailApi(body,reqHeader)
+        const result = await allApplicationsByUserMailApi(body, reqHeader)
         console.log(result.data);
         setApplications(result.data)
 
@@ -175,7 +178,7 @@ const UserDashboard = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <ProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                    <ProfileEdit setPreview={setPreview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -197,13 +200,13 @@ const UserDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarUser setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                        <SidebarUser preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
 
             {/* header componentr */}
-            <UserHeader />
+            <UserHeader preview={preview} />
 
 
             {/* full part under header  */}
@@ -242,7 +245,7 @@ const UserDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarUser setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                                <SidebarUser preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>

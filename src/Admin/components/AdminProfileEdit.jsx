@@ -4,9 +4,12 @@ import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { editUserApi } from '../../services/allApis'
 
-const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
+const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails, setPreview }) => {
 
     const [token, setToken] = useState('')
+
+    const [profileImage, setProfileImage] = useState(null);
+
 
     const handleEdit = async () => {
 
@@ -14,7 +17,23 @@ const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
             'Authorization': `Bearer ${token}`
         }
 
-        const result = await editUserApi(userDetails,reqHeader)
+        const formData = new FormData()
+
+        formData.append("_id", userDetails._id)
+        formData.append("username", userDetails.username)
+        formData.append("email", userDetails.email)
+        formData.append("password", userDetails.password || "")
+
+        formData.append("bio[type]", userDetails.bio.type || "")
+        formData.append("bio[email]", userDetails.bio.email || "")
+        
+
+        //image
+        if (profileImage) {
+            formData.append("pic", profileImage)
+        }
+
+        const result = await editUserApi(formData, reqHeader)
         if (result.status == 200) {
 
             toast.success('Saved Changes.', {
@@ -35,6 +54,23 @@ const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
 
     }
 
+
+    const handleFileChange = (e) => {
+
+        setProfileImage(e.target.files[0]);
+
+        const file = e.target.files[0]
+
+        setUserDetails({ ...userDetails, bio: { ...userDetails.bio, pic: file } })
+
+        if (file) {
+
+            const url = URL.createObjectURL(file)
+            setPreview(url)
+
+        }
+    };
+
     useEffect(() => {
 
         const token = sessionStorage.getItem('token')
@@ -52,7 +88,7 @@ const AdminProfileEdit = ({ setEdit, userDetails, setUserDetails }) => {
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Profile Photo</h1>
-                    <input type="file" id='pic' className=' hidden border border-blue-300 rounded-md p-1 w-full px-2' />
+                    <input onChange={(e) => handleFileChange(e)} type="file" id='pic' className=' hidden border border-blue-300 rounded-md p-1 w-full px-2' />
                     <label htmlFor="pic" className=' px-2 p-1 border bg-blue-900 rounded text-white'>Choose <FontAwesomeIcon icon={faFile} /></label>
                 </div>
 

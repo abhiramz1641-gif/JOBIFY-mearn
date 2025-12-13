@@ -1,8 +1,10 @@
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
+import { serverURL } from '../../../services/serverURL';
 
-const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
+const SidebarUser = ({ setEdit, userDetails, setUserDetails, preview }) => {
+
 
 
     console.log(userDetails);
@@ -14,7 +16,10 @@ const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
             <div className='  pt-3 pe-1 flex flex-col pb-4'>
                 <div className='border border-blue-400 rounded-xl py-5 bg-white'>
                     <div className=' flex flex-col items-center gap-2'>
-                        <img className=' border' style={{ height: "100px", width: "100px", borderRadius: "50px" }} src="https://media.istockphoto.com/id/1316420668/vector/user-icon-human-person-symbol-social-profile-icon-avatar-login-sign-web-user-symbol.jpg?s=612x612&w=0&k=20&c=AhqW2ssX8EeI2IYFm6-ASQ7rfeBWfrFFV4E87SaFhJE=" alt="" />
+                        <img className=' border' style={{ height: "100px", width: "100px", borderRadius: "50px" }} src={
+                            preview ||
+                            `${serverURL}/uploads/images/${userDetails.bio.pic}`
+                        } alt="Profile Pic" />
                         <div className=' flex flex-col items-center mb-2'>
                             <h1 id='he' className=' text-2xl font-semibold'>{userDetails.username}</h1>
                             <h1 id='he' className=' text-xl text-center'>{userDetails.bio.title}</h1>
@@ -36,7 +41,7 @@ const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
                     <div className=' grid grid-cols-2 gap-1 p-3'>
                         {userDetails.bio.skills.length > 0 &&
 
-                            userDetails.bio.skills.map((item,index) => (
+                            userDetails.bio.skills.map((item, index) => (
 
                                 <div key={index} className=' text-center rounded bg-blue-200 p-2'>
                                     <p id='pa'>{item}</p>
@@ -47,7 +52,7 @@ const SidebarUser = ({ setEdit, userDetails, setUserDetails }) => {
                         }
                     </div>
                 </div>
-                
+
 
             </div>
 

@@ -1,6 +1,7 @@
+import { serverURL } from "../../services/serverURL"
 
 
-const SidebarAdmin = ({setEdit,userDetails, setUserDetails }) => {
+const SidebarAdmin = ({setEdit,userDetails, setUserDetails,preview }) => {
 
 
 
@@ -11,7 +12,7 @@ const SidebarAdmin = ({setEdit,userDetails, setUserDetails }) => {
             <div className='  pt-3 pe-1 flex flex-col pb-4'>
                 <div className='border border-blue-400 rounded-xl py-5 bg-white'>
                     <div className=' flex flex-col items-center gap-2'>
-                        <img className=' border' style={{ height: "100px", width: "100px", borderRadius: "50px" }} src="https://media.istockphoto.com/id/522855255/vector/male-profile-flat-blue-simple-icon-with-long-shadow.jpg?s=612x612&w=0&k=20&c=EQa9pV1fZEGfGCW_aEK5X_Gyob8YuRcOYCYZeuBzztM=" alt="" />
+                        <img className=' border' style={{ height: "100px", width: "100px", borderRadius: "50px" }} src={preview ||`${serverURL}/uploads/images/${userDetails.bio.pic}`} alt="" />
                         <div className=' flex flex-col items-center mb-2'>
                             <h1 id='he' className=' text-2xl font-semibold'>{userDetails.username}</h1>
                         </div>

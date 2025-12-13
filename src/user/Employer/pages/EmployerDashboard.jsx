@@ -16,6 +16,8 @@ const EmployerDashboard = () => {
 
     const [email, setEmail] = useState('')
 
+    const [preview, setPreview] = useState('')
+
     const [userDetails, setUserDetails] = useState({})
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -23,7 +25,7 @@ const EmployerDashboard = () => {
     const [medMenyOpen, setMedMenuOpen] = useState(false)
 
     const [applications, setApplications] = useState([])
-    
+
     const [interview, setInterview] = useState([])
 
     const [jobs, setJobs] = useState([])
@@ -42,12 +44,12 @@ const EmployerDashboard = () => {
     const handleToggle = (open) => {
 
         setMenuOpen(open);
-        if (open) {
-            setMenuOpen(true)
-        }
-        else {
-            setMenuOpen(false)
-        }
+        // if (open) {
+        //     setMenuOpen(true)
+        // }
+        // else {
+        //     setMenuOpen(false)
+        // }
         //console.log("Button is now:", open ? "OPEN" : "CLOSED");
 
     };
@@ -113,11 +115,11 @@ const EmployerDashboard = () => {
         //console.log(ji);
 
         //console.log(a);
-        var applicationArray=[]
+        var applicationArray = []
         for (let id of ji) {
 
-            a.forEach(appl=>{
-                if(appl.jobId==id){
+            a.forEach(appl => {
+                if (appl.jobId == id) {
                     applicationArray.push(appl)
                 }
             })
@@ -125,11 +127,11 @@ const EmployerDashboard = () => {
         //console.log(applicationArray);
         setApplications(applicationArray)
 
-        var interArray=[]
+        var interArray = []
 
-        applicationArray.forEach(item=>{
+        applicationArray.forEach(item => {
 
-            item.status=="approved-accepted"&&interArray.push(item)
+            item.status == "approved-accepted" && interArray.push(item)
 
         })
 
@@ -137,8 +139,6 @@ const EmployerDashboard = () => {
 
 
     }
-
-
 
 
     useEffect(() => {
@@ -162,7 +162,7 @@ const EmployerDashboard = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <EmployerProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                    <EmployerProfileEdit setPreview={setPreview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -184,12 +184,12 @@ const EmployerDashboard = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarEmployer setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                        <SidebarEmployer preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
 
-            <EmployerHeader />
+            <EmployerHeader preview={preview} />
 
             <motion.div layout
                 animate={{
@@ -226,7 +226,7 @@ const EmployerDashboard = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarEmployer setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                                <SidebarEmployer preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>

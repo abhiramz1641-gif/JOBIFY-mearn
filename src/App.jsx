@@ -13,6 +13,7 @@ import ViewApplication from "./user/Employer/pages/ViewApplication"
 import AdminDashbord from "./Admin/pages/AdminDashbord"
 import MyApplications from "./user/Job_Seeker/pages/myApplications"
 import AutomatedJobSearch from "./user/Job_Seeker/pages/AutomatedJobSearch"
+import AiAssistant from "./components/AiAssistant"
 
 
 function App() {
@@ -27,21 +28,25 @@ function App() {
         {/* job seeker */}
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/jobs" element={<JobSearch />} />
-        <Route path="/jobview/:id" element={<JobView/>} />
-        <Route path="/my-applications" element={<MyApplications/>} />
-        <Route path="/automated-job-search" element={<AutomatedJobSearch/>} />
+        <Route path="/jobview/:id" element={<JobView />} />
+        <Route path="/my-applications" element={<MyApplications />} />
+        <Route path="/automated-job-search" element={<AutomatedJobSearch />} />
 
         {/* employer */}
-        <Route path="/EmployerDashboard" element={<EmployerDashboard/>} />
-        <Route path="/JobPosted" element={<JobPosted/>} />
-        <Route path="/JobEdit/:id" element={<EmployerJobEdit/>} />
-        <Route path="/jobApplications" element={<JobApplications/>} />
-        <Route path="/jobPost" element={<JobPost/>} />
-        <Route path="/ViewApplication/:id" element={<ViewApplication/>} />
+        <Route path="/EmployerDashboard" element={<EmployerDashboard />} />
+        <Route path="/JobPosted" element={<JobPosted />} />
+        <Route path="/JobEdit/:id" element={<EmployerJobEdit />} />
+        <Route path="/jobApplications" element={<JobApplications />} />
+        <Route path="/jobPost" element={<JobPost />} />
+        <Route path="/ViewApplication/:id" element={<ViewApplication />} />
 
         {/* admin */}
-        <Route path="/AdminDashboard" element={<AdminDashbord/>} />
+        <Route path="/AdminDashboard" element={<AdminDashbord />} />
+
+
       </Routes>
+
+      {/* <AiAssistant />  */}
     </>
   )
 }

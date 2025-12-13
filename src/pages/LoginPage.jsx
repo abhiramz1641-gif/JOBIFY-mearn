@@ -136,12 +136,13 @@ const LoginPage = () => {
                 if (result.data.existingUser.bio.type == "jobSeeker" && user == 1 || result.data.existingUser.bio.type == "Employer" && user == 2 || result.data.existingUser.bio.type == "Admin" && user == 3) {
 
                     toast.success('SignIn Successfull.', {
-                        duration: 1500
+                        duration: 1200
                     })
 
                     sessionStorage.setItem("id", result.data.existingUser._id)
                     sessionStorage.setItem("email", result.data.existingUser.email)
                     sessionStorage.setItem("token", result.data.token)
+                    sessionStorage.setItem("type", result.data.existingUser.bio.type)
 
                     setUserDetails({
                         username: "",
@@ -175,7 +176,7 @@ const LoginPage = () => {
 
                         }
 
-                    }, 1500);
+                    },1500);
 
                 } else {
                     toast.error('User Not Found.', {
@@ -197,7 +198,6 @@ const LoginPage = () => {
         }
 
     }
-
 
 
 
@@ -251,12 +251,14 @@ const LoginPage = () => {
 
                     {/* {!register && <h1 className=' text-end cursor-pointer hover:underline'>Forgot Password?</h1>} */}
 
-                    {!register && <h1
+
+
+                    {/* {!register && <h1
                         className=' text-end cursor-pointer hover:underline'
                         onClick={() => navigate("/forgot")}
                     >
                         Forgot Password?
-                    </h1>}
+                    </h1>} */}
 
 
 

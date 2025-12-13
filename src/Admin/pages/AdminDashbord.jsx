@@ -19,6 +19,7 @@ const AdminDashbord = () => {
 
     const [userDetails, setUserDetails] = useState({})
 
+    const [preview, setPreview] = useState('')
 
     const [application, setApplications] = useState(false)
 
@@ -46,13 +47,13 @@ const AdminDashbord = () => {
     const handleToggle = (open) => {
 
         setMenuOpen(open);
-        if (open) {
-            setMenuOpen(true)
-        }
-        else {
-            setMenuOpen(false)
-        }
-        console.log("Button is now:", open ? "OPEN" : "CLOSED");
+        // if (open) {
+        //     setMenuOpen(true)
+        // }
+        // else {
+        //     setMenuOpen(false)
+        // }
+        //console.log("Button is now:", open ? "OPEN" : "CLOSED");
 
     };
 
@@ -79,7 +80,7 @@ const AdminDashbord = () => {
 
     }
 
-    const getUserData = async (mail,t) => {
+    const getUserData = async (mail, t) => {
 
         const mailId = {
             email: mail
@@ -91,7 +92,7 @@ const AdminDashbord = () => {
         }
 
 
-        const result = await getAdminUserApi(mailId,reqHeader)
+        const result = await getAdminUserApi(mailId, reqHeader)
 
         console.log(result.data.existingUser);
 
@@ -118,7 +119,7 @@ const AdminDashbord = () => {
             'Authorization': `Bearer ${token}`
         }
 
-        const result = await adminApplicationApprovalApi({ id },reqHeader)
+        const result = await adminApplicationApprovalApi({ id }, reqHeader)
         console.log(result);
         await getApplication(token)
 
@@ -130,7 +131,7 @@ const AdminDashbord = () => {
             'Authorization': `Bearer ${token}`
         }
 
-        const result = await adminJobApprovalApi({ id },reqHeader)
+        const result = await adminJobApprovalApi({ id }, reqHeader)
         setAllJobs(result.data)
         await getjobs(token)
 
@@ -151,10 +152,10 @@ const AdminDashbord = () => {
         const mail = sessionStorage.getItem('email')
         setEmail(mail)
 
-        const token=sessionStorage.getItem('token')
+        const token = sessionStorage.getItem('token')
         setToken(token)
 
-        getUserData(mail,token)
+        getUserData(mail, token)
         getjobs(token)
         getApplication(token)
 
@@ -170,7 +171,7 @@ const AdminDashbord = () => {
             {edit &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <AdminProfileEdit setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                    <AdminProfileEdit setPreview={setPreview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
 
                 </div>
 
@@ -192,12 +193,12 @@ const AdminDashbord = () => {
                             <FontAwesomeIcon onClick={handleMedSideBarClose} icon={faX} className=' text-white text-4xl' />
                         </div>
 
-                        <SidebarAdmin setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                        <SidebarAdmin preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                     </motion.div>
                 }
             </AnimatePresence>
 
-            <AdminHeader />
+            <AdminHeader preview={preview} />
 
             <motion.div layout
                 animate={{
@@ -234,7 +235,7 @@ const AdminDashbord = () => {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.3, delay: 0.2 }}
                             >
-                                <SidebarAdmin setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
+                                <SidebarAdmin preview={preview} setEdit={setEdit} userDetails={userDetails} setUserDetails={setUserDetails} />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -306,7 +307,7 @@ const AdminDashbord = () => {
                                         </div>
 
                                         <div className=' flex gap-2 mb-3 flex-wrap'>
-                                            {job.skills.map((item,index) => (
+                                            {job.skills.map((item, index) => (
 
                                                 <div key={index} className=' bg-blue-100 p-1 px-2 rounded-2xl'>{item}</div>
 

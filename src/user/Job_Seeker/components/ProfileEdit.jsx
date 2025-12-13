@@ -4,18 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { editUserApi } from '../../../services/allApis'
 import toast, { Toaster } from 'react-hot-toast'
 
-const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
+const ProfileEdit = ({ setEdit, setUserDetails, userDetails, setPreview }) => {
 
+    const [profileImage, setProfileImage] = useState(null);
 
-    //console.log(userDetails.bio);
-
-    // useEffect(()=>{
-
-    //     setData(userDetails)
-
-    // },[])
-
-    const [token,setToken]=useState('')
+    const [token, setToken] = useState('')
 
     const handleSkill = (skills) => {
 
@@ -24,38 +17,106 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
 
     }
 
+    // const handleEdit = async () => {
+
+    //     const reqHeader = {
+    //         'Authorization': `Bearer ${token}`
+    //     }
+
+    //     console.log(userDetails);
+
+
+
+    //     const result = await editUserApi(userDetails, reqHeader)
+    //     if (result.status == 200) {
+
+    //         toast.success('Saved Changes.', {
+    //             duration: 1000
+    //         })
+
+    //     } else {
+
+    //         toast.error('Failed.', {
+    //             duration: 1000
+    //         })
+
+    //     }
+
+    //     setTimeout(() => {
+    //         setEdit(false)
+    //     }, 1000)
+    // }
+
+
+
     const handleEdit = async () => {
-
         const reqHeader = {
-            'Authorization': `Bearer ${token}`
+            Authorization: `Bearer ${token}`
         }
 
-        const result = await editUserApi(userDetails,reqHeader)
-        if (result.status == 200) {
+        const formData = new FormData()
 
-            toast.success('Saved Changes.', {
-                duration: 1000
-            })
+        formData.append("_id", userDetails._id)
+        formData.append("username", userDetails.username)
+        formData.append("email", userDetails.email)
+        formData.append("password", userDetails.password || "")
 
+        
+        formData.append("bio[type]", userDetails.bio.type || "")
+        formData.append("bio[title]", userDetails.bio.title || "")
+        formData.append("bio[email]", userDetails.bio.email || "")
+        formData.append("bio[experience]", userDetails.bio.experience || "")
+        formData.append("bio[education]", userDetails.bio.education || "")
+        formData.append("bio[skills]", JSON.stringify(userDetails.bio.skills || []))
+        formData.append("bio[resume]", userDetails.bio.resume || "")
+
+        //image
+        if (profileImage) {
+            formData.append("pic", profileImage)
+        }
+
+        const result = await editUserApi(formData, reqHeader)
+
+        if (result.status === 200) {
+            toast.success("Saved Changes")
         } else {
-
-            toast.error('Failed.', {
-                duration: 1000
-            })
-
+            toast.error("Failed")
         }
 
-        setTimeout(() => {
-            setEdit(false)
-        }, 1000)
+        setTimeout(() => setEdit(false), 1000)
     }
 
-    useEffect(()=>{
 
-        const token=sessionStorage.getItem('token')
+
+
+
+
+    const handleFileChange = (e) => {
+
+        setProfileImage(e.target.files[0]);
+
+        const file = e.target.files[0]
+
+        setUserDetails({ ...userDetails, bio: { ...userDetails.bio, pic: file } })
+
+        if (file) {
+
+            const url = URL.createObjectURL(file)
+            setPreview(url)
+
+        }
+    };
+
+    console.log(userDetails);
+
+
+
+    useEffect(() => {
+
+        const token = sessionStorage.getItem('token')
         setToken(token)
 
-    },[])
+    }, [])
 
 
 
@@ -69,7 +130,7 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Profile Photo</h1>
-                    <input type="file" id='pic' className=' hidden border border-blue-300 rounded-md p-1 w-full px-2' />
+                    <input onChange={(e) => handleFileChange(e)} type="file" id='pic' className=' hidden border border-blue-300 rounded-md p-1 w-full px-2' />
                     <label htmlFor="pic" className=' px-2 p-1 border bg-blue-900 rounded text-white'>Choose <FontAwesomeIcon icon={faFile} /></label>
                 </div>
 
@@ -98,7 +159,7 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails }) => {
                     <h1 id='he' className=' font-semibold mb-1'>Skills ( Seperate by ' , ' )</h1>
                     <input value={userDetails.bio.skills} onChange={(e) => handleSkill(e.target.value)} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
                 </div>
-               
+
                 <div className=' flex justify-center gap-3 mt-10 pb-5'>
                     {/* <button onClick={() => setEdit(false)} className=' px-2 p-1 bg-white text-blue-900 border border-blue-900 rounded-lg hover:scale-102 '>Discard</button> */}
                     <button onClick={handleEdit} className=' px-6 p-1 bg-blue-900 text-white border-blue-900 rounded-lg hover:scale-102'>Edit</button>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Silk from '../components/Silk'
@@ -10,6 +10,7 @@ import { IoSearch } from "react-icons/io5";
 import { TbBuildings } from "react-icons/tb";
 import { MdOutlinePeopleAlt } from "react-icons/md";
 import { motion } from "motion/react"
+import { getUserApi } from '../services/allApis'
 
 
 
@@ -17,6 +18,57 @@ import { motion } from "motion/react"
 const Landing = () => {
 
 
+  const [token, setToken] = useState('')
+
+  // const [type, setType] = useState('')
+
+  // const [userDetails, setUserDetails] = useState({})
+
+
+
+  // const getUserData = async (mail, t) => {
+
+  //   const mailId = {
+  //     email: mail
+  //   }
+  //   console.log(mailId);
+
+  //   const reqHeader = {
+  //     'Authorization': `Bearer ${t}`
+  //   }
+
+
+  //   const result = await getUserApi(mailId, reqHeader)
+
+  //   console.log(result.data.existingUser);
+
+  //   if (result.status == 200) {
+  //     setUserDetails(result.data.existingUser)
+  //   }
+
+
+  // }
+
+
+  useEffect(() => {
+
+    if (sessionStorage.getItem('token')) {
+
+      const tokenn = sessionStorage.getItem('token')
+
+      // const t = sessionStorage.getItem('type')
+
+      // const mail = sessionStorage.getItem('email')
+
+      setToken(tokenn)
+
+      // setType(t)
+
+      // getUserData(mail, tokenn)
+
+    }
+
+  }, [])
 
 
   return (
@@ -32,6 +84,7 @@ const Landing = () => {
         </div>
 
         <div style={{ position: "relative", zIndex: 1, height: "660px" }} className=' w-full md:p-5 gap-10'>
+
           <Header />
           <div className=' p-2 sm:p-10 mt-20 flex flex-col items-center justify-center'>
             <h1 id='he' style={{ fontWeight: "800", color: "#FFFFF" }} className='text-3xl sm:text-4xl md:text-7xl text-white text-center'>Change The Way You</h1>
@@ -39,10 +92,11 @@ const Landing = () => {
             <br />
             <p id='pa' className=' xs:text-lg sm:text-2xl font-medium text-white text-center'>Finding work is no more a work.</p>
             <br />
-            <Link to={'/login'}>
-              <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' hover:scale-103 p-2 px-8 rounded w-fit text-white font-semibold shadow-2xl shadow-black'>Get Started <FontAwesomeIcon icon={faArrowRight} /></button>
-
-            </Link>
+            {!token &&
+              <Link to={'/login'}>
+                <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' hover:scale-103 p-2 px-8 rounded w-fit text-white font-semibold shadow-2xl shadow-black'>Get Started <FontAwesomeIcon icon={faArrowRight} /></button>
+              </Link>
+            }
           </div>
           {/* <div className=' flex items-center justify-center'>
             <img className=' p-5 md:p-10' src="./images/landingg.png" alt="" />
@@ -82,7 +136,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#d6effd" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Full-Time</p>
@@ -94,7 +148,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/amazon.jpg" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>Senior UI <br /> Developer</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -102,7 +156,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#A4B3FF" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Full-Time</p>
@@ -114,7 +168,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/ytube.png" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>Frontend <br /> Developer</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -122,7 +176,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#E0E4FF" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Full-Time</p>
@@ -134,7 +188,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/x.png" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>UI/UX <br /> Designer</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -142,7 +196,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#A4B3FF" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Full-Time</p>
@@ -154,7 +208,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/google.png" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>Data <br />  Scientist</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -162,7 +216,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#E0E4FF" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Full-Time</p>
@@ -174,7 +228,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/net.png" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>DevOps <br />  Engineer</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -182,7 +236,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.04,
               transition: { duration: 0.3 }
-            }} transition={{duration:0.25}} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
+            }} transition={{ duration: 0.25 }} className='rounded-2xl  p-2 bg-white shadow-xl shadow-blue-400'>
 
               <div style={{ backgroundColor: "#d6effd" }} className=' rounded-t-xl p-5'>
                 <p id='pa' className=' font-bold mb-5'>Internship</p>
@@ -194,7 +248,7 @@ const Landing = () => {
                   <img className=' w-12 ' src="./images/adobe.png" alt="" />
                   <h1 id='he' className=' ms-3 text-lg sm:text-xl font-semibold'>Digital Marketing  <br /> Intern</h1>
                 </div>
-                <Link to={'/login'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
+                <Link to={!token?'/login':'/jobs'}><button className=' hover:scale-103 h-fit p-2 px-3 bg-blue-950 text-white rounded-4xl'>View</button></Link>
 
               </div>
 
@@ -246,7 +300,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.01,
               transition: { duration: 0.2 }
-            }} transition={{duration:0.2}} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
+            }} transition={{ duration: 0.2 }} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
               <div className=' p-5 bg-blue-100 w-fit rounded-3xl'><LuBrain className=' text-2xl' /></div>
               <h1 id='he' className=' text-xl mt-8 font-bold mb-7'>Smart Compatibility Checking</h1>
               <p id='pa' className=' text-justify md:text-xl '>We analyze your skills, experience, and preferences to recommend roles that truly fit — saving you hours of scrolling through irrelevant listings.</p>
@@ -254,7 +308,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.01,
               transition: { duration: 0.2 }
-            }} transition={{duration:0.2}} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
+            }} transition={{ duration: 0.2 }} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
               <div className=' p-5 bg-blue-100 w-fit rounded-3xl'><TbBuildings className=' text-2xl' /></div>
               <h1 id='he' className=' text-xl mt-8 font-bold mb-7'>Verified Company Profiles</h1>
               <p id='pa' className=' text-justify md:text-xl '>Explore detailed and verified company pages with culture insights, benefits, and employee reviews before you apply.</p>
@@ -262,7 +316,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.01,
               transition: { duration: 0.2 }
-            }} transition={{duration:0.2}} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl '>
+            }} transition={{ duration: 0.2 }} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl '>
               <div className=' p-5 bg-blue-100 w-fit rounded-3xl'><IoSearch className=' text-2xl' /></div>
               <h1 id='he' className=' text-xl mt-8 font-bold mb-7'>Skill-Based Filtering</h1>
               <p id='pa' className=' text-justify md:text-xl '>Our advanced filtering ensures you see only the jobs that match your skillset, preferred location, and work mode whether remote, hybrid, or on-site.</p>
@@ -270,7 +324,7 @@ const Landing = () => {
             <motion.div whileHover={{
               scale: 1.01,
               transition: { duration: 0.2 }
-            }} transition={{duration:0.2}} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
+            }} transition={{ duration: 0.2 }} className=' p-10 border border-blue-400 rounded-xl hover:shadow-xl'>
               <div className=' p-5 bg-blue-100 w-fit rounded-3xl'><MdOutlinePeopleAlt className=' text-2xl' /></div>
               <h1 id='he' className=' text-xl mt-8 font-bold mb-7'>Seamless Employer Tools</h1>
               <p id='pa' className=' text-justify md:text-xl'>Employers can post jobs, manage applicants, and analyze hiring data, all from a single, intuitive dashboard.</p>
