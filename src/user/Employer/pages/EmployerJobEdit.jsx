@@ -5,6 +5,7 @@ import { faArrowRightFromBracket, faFileArrowUp, faL, faPenToSquare } from '@for
 import { motion, AnimatePresence } from "framer-motion";
 import EmployerHeader from '../components/EmployerHeader'
 import { editJobApi, jobsByIdApi } from '../../../services/allApis';
+import toast, { Toaster } from 'react-hot-toast';
 
 
 
@@ -41,6 +42,9 @@ const EmployerJobEdit = () => {
         setApply(false)
         const result = await editJobApi(job)
         console.log(result);
+        if (result.status == 200) {
+            toast.success('Job Edited.')
+        }
 
     }
 
@@ -195,6 +199,12 @@ const EmployerJobEdit = () => {
                 </motion.div>
 
             </div>
+
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
         </div>
     )

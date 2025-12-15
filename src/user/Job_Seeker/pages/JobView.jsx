@@ -20,7 +20,7 @@ const JobView = () => {
     }
 
     //const [id,setId]=useState('')
-    const [email, setEmail] = useState('')
+    const [mail, setEmail] = useState('')
 
     const nav = useNavigate()
 
@@ -200,13 +200,12 @@ const JobView = () => {
                 status: "pending",
                 score
             });
+            setApplied(false)
+
         } else {
             toast.error("Something went wrong.", { duration: 1500 });
         }
 
-        setTimeout(() => {
-            nav('/jobs');
-        }, 1500);
     };
 
 

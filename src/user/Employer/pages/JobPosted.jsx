@@ -3,10 +3,13 @@ import { faMagnifyingGlass, faPenToSquare, faX } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EmployerHeader from '../components/EmployerHeader';
-import { jobsApi, jobsPostedApi } from '../../../services/allApis';
+import { deleteJobApi, jobsApi, jobsPostedApi } from '../../../services/allApis';
+import toast, { Toaster } from 'react-hot-toast';
 const JobPosted = () => {
 
     const [jobs, setJobs] = useState([])
+
+    const [token, setToken] = useState('')
 
 
     const getPostedJobs = async (t) => {
@@ -21,7 +24,7 @@ const JobPosted = () => {
             'Authorization': `Bearer ${t}`
         }
 
-        const result = await jobsPostedApi(mail,reqHeader)
+        const result = await jobsPostedApi(mail, reqHeader)
         console.log(result);
         if (result.status === 200) {
 
@@ -32,11 +35,50 @@ const JobPosted = () => {
 
     }
 
+    const deleteJob = async (id) => {
+
+        const body = {
+            id: id
+        }
+        //console.log(mail);
+        const reqHeader = {
+            'Authorization': `Bearer ${token}`
+        }
+
+        const result = await deleteJobApi(body, reqHeader)
+
+        if (result.status == 200) {
+
+            toast.success('Job deleted.')
+            getPostedJobs(token)
+
+        }else{
+
+            toast.error('Something went wrong.')
+
+        }
+
+    }
+
+    const handleDelete = (id) => {
+
+        toast((t) => (
+            <span>
+                Confirm <b>Delete</b>
+                <button className=' ms-2 bg-red-600 text-white px-2 p-1 rounded hover:scale-102' onClick={()=>{toast.dismiss(t.id);deleteJob(id)}}>
+                    Yes
+                </button>
+            </span>
+        ));
+
+    }
+
 
 
     useEffect(() => {
 
         const token = sessionStorage.getItem('token')
+        setToken(token)
         getPostedJobs(token)
 
     }, [])
@@ -69,13 +111,14 @@ const JobPosted = () => {
 
                                 jobs.map((job, index) => (
 
-                                    <div key={index} className='border border-blue-400 rounded-xl h-full p-5'>
-                                        <div className=' flex justify-between items-center'>
+                                    <div key={index} className='border border-blue-400 rounded-xl h-full p-3 sm:p-5'>
+                                        <div className=' flex justify-between items-center w-full'>
                                             <div>
                                                 <h1 id='pa' className=' text-lg font-semibold'>{job.jobTitle}</h1>
                                                 <h1 id='pa' className=' text-gray-500 mb-2'>{job.company}</h1>
                                             </div>
-                                            <div>
+                                            <div className=' flex flex-wrap gap-2 justify-end'>
+                                                <button onClick={() => handleDelete(job?._id)} className=' border border-red-600 text-red-600 p-2 px-4.5 rounded hover:scale-101 hover:bg-red-600 hover:text-white '>Delete</button>
                                                 <Link to={`/JobEdit/${job._id}`} ><button className=' hover:scale-101 hover:shadow-2xl hover:shadow-gray-500 p-2 px-4 bg-blue-900 text-white rounded'>Edit <FontAwesomeIcon icon={faPenToSquare} /></button></Link>
                                             </div>
                                         </div>
@@ -113,6 +156,12 @@ const JobPosted = () => {
 
                 </div>
             </div>
+
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
         </div>
     )

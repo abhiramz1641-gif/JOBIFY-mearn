@@ -50,6 +50,21 @@ export const jobsByIdApi = async (reqBody) => {
 
 }
 
+// delete job
+export const deleteJobApi = async (reqBody,reqHeader) => {
+
+   return await commonApi("delete", `${serverURL}/delete-job`, reqBody,reqHeader)
+
+}
+
+
+// delete application
+export const deleteApplicationApi = async (reqBody,reqHeader) => {
+
+   return await commonApi("delete", `${serverURL}/delete-application`, reqBody,reqHeader)
+
+}
+
 // jobs by employer
 export const jobsByEmployerApi = async (reqBody) => {
 
