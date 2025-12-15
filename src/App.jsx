@@ -13,11 +13,13 @@ import ViewApplication from "./user/Employer/pages/ViewApplication"
 import AdminDashbord from "./Admin/pages/AdminDashbord"
 import MyApplications from "./user/Job_Seeker/pages/myApplications"
 import AutomatedJobSearch from "./user/Job_Seeker/pages/AutomatedJobSearch"
-import AiAssistant from "./components/AiAssistant"
+import ChatBot from "./user/Job_Seeker/components/ChatBot"
+import { useEffect, useState } from "react"
 
 
 function App() {
 
+  const isLoggedIn=sessionStorage.getItem('token')
 
   return (
     <>
@@ -46,7 +48,8 @@ function App() {
 
       </Routes>
 
-      {/* <AiAssistant />  */}
+      {/* 🔹 Global Chatbot */}
+      {isLoggedIn && <ChatBot />}
     </>
   )
 }
