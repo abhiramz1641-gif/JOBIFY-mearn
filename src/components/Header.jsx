@@ -101,7 +101,7 @@ const Header = () => {
           position="top-center"
           reverseOrder={false}
         />
-        <div className=' flex flex-col justify-center items-center md:items-start'>
+        <div className=' flex flex-col justify-center items-start'>
           <img className=' h-16 md:h-20' src="./images/logo.png" alt="" />
         </div>
 
