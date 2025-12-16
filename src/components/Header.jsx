@@ -128,7 +128,7 @@ const Header = () => {
         }
 
         {!token ?
-          <div className=' flex gap-2 items-center justify-center md:justify-end'>
+          <div className=' flex justify-end'>
             <Link to={'/login'}><button className=' hover:scale-103 p-2 px-2 md:px-4 rounded bg-white border border-gray-600 text-gray-600 font-semibold shadow-2xl shadow-black'>Log In</button></Link>
             {/* <Link to={'/login'} >
               <button style={{ backgroundImage: "linear-gradient(135deg, #5771FF, #00C8FF)" }} className=' hover:scale-103 font-semibold px-2 md:px-4 p-2 rounded text-white shadow-2xl shadow-black'>Sign Up</button>
