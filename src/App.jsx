@@ -11,10 +11,10 @@ import JobApplications from "./user/Employer/pages/JobApplications"
 import JobPost from "./user/Employer/pages/JobPost"
 import ViewApplication from "./user/Employer/pages/ViewApplication"
 import AdminDashbord from "./Admin/pages/AdminDashbord"
-import MyApplications from "./user/Job_Seeker/pages/myApplications"
 import AutomatedJobSearch from "./user/Job_Seeker/pages/AutomatedJobSearch"
 import ChatBot from "./user/Job_Seeker/components/ChatBot"
 import { useEffect, useState } from "react"
+import AllMyApplications from "./user/Job_Seeker/pages/AllMyApplications"
 
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/jobs" element={<JobSearch />} />
         <Route path="/jobview/:id" element={<JobView />} />
-        <Route path="/my-applications" element={<MyApplications />} />
+        <Route path="/my-applications" element={<AllMyApplications />} />
         <Route path="/automated-job-search" element={<AutomatedJobSearch />} />
 
         {/* employer */}

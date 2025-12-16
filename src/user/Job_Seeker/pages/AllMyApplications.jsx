@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { allApplicationsByUserMailApi, deleteApplicationApi, jobsApi, jobsByIdApi } from '../../../services/allApis'
 import toast, { Toaster } from 'react-hot-toast'
 
-const MyApplications = () => {
+const AllMyApplications = () => {
 
 
     const [applications, setApplications] = useState([])
@@ -300,4 +300,4 @@ const MyApplications = () => {
     )
 }
 
-export default MyApplications
+export default AllMyApplications
