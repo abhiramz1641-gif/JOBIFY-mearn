@@ -15,16 +15,26 @@ import AutomatedJobSearch from "./user/Job_Seeker/pages/AutomatedJobSearch"
 import ChatBot from "./user/Job_Seeker/components/ChatBot"
 import { useEffect, useState } from "react"
 import AllMyApplications from "./user/Job_Seeker/pages/AllMyApplications"
+import Preloader from "./components/Preloader"
 
 
 function App() {
 
   const isLoggedIn=sessionStorage.getItem('token')
 
+  const [loader,setLoader]=useState(true)
+
+  setTimeout(()=>{
+
+    setLoader(false)
+
+  },4500)
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={loader && !isLoggedIn?<Preloader/>:<Landing />} />
+        {/* <Route path="/preloader" element={<Preloader />} /> */}
         <Route path="/login" element={<LoginPage />} />
 
         {/* job seeker */}
