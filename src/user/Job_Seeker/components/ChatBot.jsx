@@ -18,12 +18,12 @@ export default function ChatBotVoicePopup() {
     const recognition = useRef(null);
     const navigate = useNavigate();
 
-    // Auto-scroll
+    //scrollll
     useEffect(() => {
         if (chatEndRef.current) chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }, [messages, loading]);
 
-    // Initialize Brave-compatible Speech Recognition
+    // speech recogntn
     useEffect(() => {
         if (!("webkitSpeechRecognition" in window || "SpeechRecognition" in window)) {
             console.warn("Browser does not support Speech Recognition");
@@ -32,8 +32,8 @@ export default function ChatBotVoicePopup() {
 
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition.current = new SpeechRecognition();
-        recognition.current.continuous = true;       // Keep listening
-        recognition.current.interimResults = true;   // Live updates
+        recognition.current.continuous = true;      
+        recognition.current.interimResults = true; 
         recognition.current.lang = "en-US";
 
         recognition.current.onresult = (event) => {
@@ -50,14 +50,14 @@ export default function ChatBotVoicePopup() {
         };
 
         recognition.current.onend = () => {
-            if (listening) recognition.current.start(); // auto-restart
+            if (listening) recognition.current.start();
         };
     }, [listening]);
 
     const startListening = async () => {
         try {
             if (recognition.current && !listening) {
-                // Request mic permission
+               
                 await navigator.mediaDevices.getUserMedia({ audio: true });
                 setListening(true);
                 recognition.current.start();

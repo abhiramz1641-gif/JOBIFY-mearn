@@ -16,6 +16,7 @@ import ChatBot from "./user/Job_Seeker/components/ChatBot"
 import { useEffect, useState } from "react"
 import AllMyApplications from "./user/Job_Seeker/pages/AllMyApplications"
 import Preloader from "./components/Preloader"
+import ResumeScanner from "./components/ResumeScanner"
 
 
 function App() {
@@ -54,11 +55,16 @@ function App() {
 
         {/* admin */}
         <Route path="/AdminDashboard" element={<AdminDashbord />} />
+        
+        
+        
+        
+        {/* <Route path="/resumeParse" element={<ResumeScanner />} /> */}
 
 
       </Routes>
 
-      {/* 🔹 Global Chatbot */}
+      {/* Chatbot */}
       {isLoggedIn && <ChatBot />}
     </>
   )

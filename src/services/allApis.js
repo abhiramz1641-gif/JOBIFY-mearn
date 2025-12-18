@@ -16,30 +16,30 @@ export const loginApi = async (reqBody) => {
 }
 
 //get user
-export const getUserApi = async (reqBody,reqHeader) => {
+export const getUserApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("post", `${serverURL}/get-user`, reqBody,reqHeader)
+   return await commonApi("post", `${serverURL}/get-user`, reqBody, reqHeader)
 
 }
 
 // edit user
-export const editUserApi = async (reqBody,reqHeader) => {
+export const editUserApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("put", `${serverURL}/user-edit`, reqBody,reqHeader)
+   return await commonApi("put", `${serverURL}/user-edit`, reqBody, reqHeader)
 
 }
 
 // post job
-export const jobPostApi = async (reqBody,reqHeader) => {
+export const jobPostApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("post", `${serverURL}/add-job`, reqBody,reqHeader)
+   return await commonApi("post", `${serverURL}/add-job`, reqBody, reqHeader)
 
 }
 
 // posted jobs
-export const jobsPostedApi = async (reqBody,reqHeader) => {
+export const jobsPostedApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("post", `${serverURL}/jobs-posted`, reqBody,reqHeader)
+   return await commonApi("post", `${serverURL}/jobs-posted`, reqBody, reqHeader)
 
 }
 
@@ -51,17 +51,17 @@ export const jobsByIdApi = async (reqBody) => {
 }
 
 // delete job
-export const deleteJobApi = async (reqBody,reqHeader) => {
+export const deleteJobApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("delete", `${serverURL}/delete-job`, reqBody,reqHeader)
+   return await commonApi("delete", `${serverURL}/delete-job`, reqBody, reqHeader)
 
 }
 
 
 // delete application
-export const deleteApplicationApi = async (reqBody,reqHeader) => {
+export const deleteApplicationApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("delete", `${serverURL}/delete-application`, reqBody,reqHeader)
+   return await commonApi("delete", `${serverURL}/delete-application`, reqBody, reqHeader)
 
 }
 
@@ -82,7 +82,7 @@ export const editJobApi = async (reqBody) => {
 // all jobs
 export const jobsApi = async (reqHeader) => {
 
-   return await commonApi("get", `${serverURL}/all-jobs`, ' ',reqHeader)
+   return await commonApi("get", `${serverURL}/all-jobs`, ' ', reqHeader)
 
 }
 
@@ -104,7 +104,7 @@ export const appliedStatusApi = async (reqBody) => {
 // all applications
 export const allApplicationsApi = async (reqHeader) => {
 
-   return await commonApi("get", `${serverURL}/get-applications`, ' ',reqHeader)
+   return await commonApi("get", `${serverURL}/get-applications`, ' ', reqHeader)
 
 }
 
@@ -116,9 +116,9 @@ export const allApplicationsByJobIdApi = async (reqBody) => {
 }
 
 // applications by userMail
-export const allApplicationsByUserMailApi = async (reqBody,reqHeader) => {
+export const allApplicationsByUserMailApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("post", `${serverURL}/all-applications-by-user`, reqBody,reqHeader)
+   return await commonApi("post", `${serverURL}/all-applications-by-user`, reqBody, reqHeader)
 
 }
 
@@ -142,36 +142,47 @@ export const employerApplicationRejectApi = async (reqBody) => {
 
 // .............admin............
 //get admin user
-export const getAdminUserApi = async (reqBody,reqHeader) => {
+export const getAdminUserApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("post", `${serverURL}/get-user-admin`, reqBody,reqHeader)
+   return await commonApi("post", `${serverURL}/get-user-admin`, reqBody, reqHeader)
 
 }
 
 //all jobs admin
 export const adminJobsApi = async (reqHeader) => {
 
-   return await commonApi("get", `${serverURL}/all-jobs-admin`, ' ',reqHeader)
+   return await commonApi("get", `${serverURL}/all-jobs-admin`, ' ', reqHeader)
 
 }
 
 // all applications
 export const allApplicationsAdminApi = async (reqHeader) => {
 
-   return await commonApi("get", `${serverURL}/get-applications-admin`, ' ',reqHeader)
+   return await commonApi("get", `${serverURL}/get-applications-admin`, ' ', reqHeader)
 
 }
 
 // admin approval jobs
-export const adminJobApprovalApi = async (reqBody,reqHeader) => {
+export const adminJobApprovalApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("put", `${serverURL}/admin-job-approval`, reqBody,reqHeader)
+   return await commonApi("put", `${serverURL}/admin-job-approval`, reqBody, reqHeader)
 
 }
 
 // admin application approval
-export const adminApplicationApprovalApi = async (reqBody,reqHeader) => {
+export const adminApplicationApprovalApi = async (reqBody, reqHeader) => {
 
-   return await commonApi("put", `${serverURL}/admin-application-approval`, reqBody,reqHeader)
+   return await commonApi("put", `${serverURL}/admin-application-approval`, reqBody, reqHeader)
 
+}
+
+
+
+
+
+
+
+
+export const scanResumeApi = async (reqBody) => {
+   return await commonApi("post", `${serverURL}/scan-resume`, reqBody);
 }
