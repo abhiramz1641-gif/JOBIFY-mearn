@@ -59,7 +59,7 @@ function App() {
         
         
         
-        {/* <Route path="/resumeParse" element={<ResumeScanner />} /> */}
+        <Route path="/resumeParse" element={<ResumeScanner />} />
 
 
       </Routes>

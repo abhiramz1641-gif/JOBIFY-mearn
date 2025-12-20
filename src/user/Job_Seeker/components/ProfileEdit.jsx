@@ -136,28 +136,28 @@ const ProfileEdit = ({ setEdit, setUserDetails, userDetails, setPreview }) => {
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Name</h1>
-                    <input value={userDetails.username} onChange={(e) => setUserDetails({ ...userDetails, username: e.target.value })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Name' />
+                    <input value={userDetails?.username} onChange={(e) => setUserDetails({ ...userDetails, username: e.target.value })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Name' />
                 </div>
 
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Title</h1>
-                    <input value={userDetails.bio.title} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, title: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Title' />
+                    <input value={userDetails?.bio.title} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, title: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Title' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Email</h1>
-                    <input value={userDetails.bio.email} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, email: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
+                    <input value={userDetails?.bio.email} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, email: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Email' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Experience (in years)</h1>
-                    <input value={userDetails.bio.experience} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, experience: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
+                    <input value={userDetails?.bio.experience} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, experience: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Experience' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Highest Education</h1>
-                    <input value={userDetails.bio.education} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, education: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Education' />
+                    <input value={userDetails?.bio.education} onChange={(e) => setUserDetails({ ...userDetails, bio: { ...userDetails.bio, education: e.target.value } })} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Education' />
                 </div>
                 <div className=' mb-5'>
                     <h1 id='he' className=' font-semibold mb-1'>Skills ( Seperate by ' , ' )</h1>
-                    <input value={userDetails.bio.skills} onChange={(e) => handleSkill(e.target.value)} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
+                    <input value={userDetails?.bio.skills} onChange={(e) => handleSkill(e.target.value)} type="text" className=' border border-blue-300 rounded-md p-1 w-full px-2' placeholder='Skills' />
                 </div>
 
                 <div className=' flex justify-center gap-3 mt-10 pb-5'>

@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { scanResumeApi } from "../services/allApis";
 
-const ResumeScanner = () => {
+const ResumeScanner = ({setResumeParsss,setUserDetails,userDetails}) => {
     const [loading, setLoading] = useState(false);
     const [resumeData, setResumeData] = useState(null);
     const [error, setError] = useState("");
@@ -20,6 +20,25 @@ const ResumeScanner = () => {
             console.log(res.data.data);
 
             setResumeData(res.data.data);
+
+            const a=res.data.data
+
+            console.log(a);
+            
+            setUserDetails({ ...userDetails, bio: { ...userDetails.bio, title: a.role,email: a.email,experience: a.experience,skills: a.skills  } })
+            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, email: a.email } })
+            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, experience: a.experience} })
+            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, skills: a.skills  } })
+
+            console.log(userDetails);
+
+            setTimeout(()=>{
+
+                setResumeParsss(false)
+
+            },2500)
+
+
         } catch (err) {
             setError("Failed to scan resume");
         } finally {
@@ -49,11 +68,11 @@ const ResumeScanner = () => {
     });
 
     return (
-        <div className="max-w-xl mx-auto p-6">
+        <div className="max-w-xl mx-auto p-3 md:p-6 border border-blue-200 rounded-2xl my-5 bg-white">
             {/* Drag & Drop */}
             <div
                 {...getRootProps()}
-                className={`border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition
+                className={`border-2 border-dashed rounded-lg md:p-10 text-center cursor-pointer transition
         ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-400"}`}
             >
                 <input {...getInputProps()} />
@@ -65,7 +84,6 @@ const ResumeScanner = () => {
                 <p className="text-sm text-gray-400 mt-2">PDF only</p>
             </div>
 
-            {/* OR Divider */}
             <div className="text-center my-4 text-gray-500">
                 — OR —
             </div>
@@ -75,7 +93,7 @@ const ResumeScanner = () => {
                 <input
                     type="file"
                     accept=".pdf"
-                    onChange={(e)=>handleFileChange(e)}
+                    onChange={(e) => handleFileChange(e)}
                     className="block mx-auto text-sm text-gray-600
           file:mr-4 file:py-2 file:px-4
           file:rounded file:border-0
@@ -100,8 +118,8 @@ const ResumeScanner = () => {
 
             {/* Result */}
             {resumeData && (
-                <div className="mt-6 bg-white shadow rounded-lg p-5">
-                    <h3 className="text-lg font-semibold mb-3">
+                <div className="mt-6 bg-white border border-blue-900 rounded-lg p-2.5 md:p-5">
+                    <h3 className="text-lg font-bold mb-3 text-blue-950">
                         Extracted Resume Data
                     </h3>
 
@@ -126,8 +144,18 @@ const ResumeScanner = () => {
                             )}
                         </div>
                     </div>
+
+
+                    <h1 id="pa" className=" text-center text-xl mt-5">You Can Edit Profile on the Profile Sidebar</h1>
+
+                    <div className=" flex justify-center">
+                        <img src="images/dots.gif" alt="" />
+                    </div>
                 </div>
             )}
+
+
+
         </div>
     );
 };

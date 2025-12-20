@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom'
 import ProfileEdit from '../components/ProfileEdit'
 import { allApplicationsByUserMailApi, getUserApi, jobsApi } from '../../../services/allApis'
+import ResumeScanner from '../../../components/ResumeScanner'
 
 const UserDashboard = () => {
 
@@ -28,6 +29,8 @@ const UserDashboard = () => {
     const [edit, setEdit] = useState(false)
 
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const [resumeParsss, setResumeParsss] = useState(false);
 
     const [medMenyOpen, setMedMenuOpen] = useState(false)
 
@@ -82,8 +85,14 @@ const UserDashboard = () => {
 
         if (result.status == 200) {
             setUserDetails(result.data.existingUser)
-        }
+            const u = result.data.existingUser
 
+            //console.log(u);
+
+            if (u.bio.title == '' && u.bio.email == '' && u.bio.experience == '' && u.bio.education == '') {
+                setResumeParsss(true)
+            }
+        }
 
     }
 
@@ -368,6 +377,17 @@ const UserDashboard = () => {
                 </div>
 
             </motion.div>
+
+
+            {resumeParsss &&
+                <div id='modal' className='absolute inset-0  items-center flex justify-center '>
+
+                    <ResumeScanner userDetails={userDetails} setUserDetails={setUserDetails} setResumeParsss={setResumeParsss} />
+
+                </div>
+            }
+
+
         </div>
 
     )
