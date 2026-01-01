@@ -8,6 +8,7 @@ import SidebarEmployer from '../components/SidebarEmployer';
 import EmployerHeader from '../components/EmployerHeader';
 import EmployerProfileEdit from '../components/EmployerProfileEdit';
 import { allApplicationsApi, allApplicationsByUserMailApi, getUserApi, jobsPostedApi } from '../../../services/allApis';
+import { Toaster } from 'react-hot-toast';
 
 const EmployerDashboard = () => {
 
@@ -157,6 +158,11 @@ const EmployerDashboard = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
             {/* edit modal */}
             {edit &&

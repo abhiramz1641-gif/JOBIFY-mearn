@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { scanResumeApi } from "../services/allApis";
+import { editUserApi, scanResumeApi } from "../services/allApis";
 
-const ResumeScanner = ({setResumeParsss,setUserDetails,userDetails}) => {
+const ResumeScanner = ({ setResumeParsss, setUserDetails, userDetails, token }) => {
     const [loading, setLoading] = useState(false);
     const [resumeData, setResumeData] = useState(null);
     const [error, setError] = useState("");
+
 
     const scanResume = async (file) => {
         const formData = new FormData();
@@ -21,22 +22,41 @@ const ResumeScanner = ({setResumeParsss,setUserDetails,userDetails}) => {
 
             setResumeData(res.data.data);
 
-            const a=res.data.data
+            const a = res.data.data
 
             console.log(a);
-            
-            setUserDetails({ ...userDetails, bio: { ...userDetails.bio, title: a.role,email: a.email,experience: a.experience,skills: a.skills  } })
-            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, email: a.email } })
-            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, experience: a.experience} })
-            // setUserDetails({ ...userDetails, bio: { ...userDetails.bio, skills: a.skills  } })
 
-            console.log(userDetails);
+            const prevBio = userDetails?.bio || {};
+            const updatedUser = { ...userDetails, bio: { ...prevBio, title: a.role, email: a.email, experience: a.experience, skills: a.skills } };
 
-            setTimeout(()=>{
+            setUserDetails(updatedUser);
 
+
+            const reqHeader = {
+                Authorization: `Bearer ${token}`
+            }
+
+            const updateForm = new FormData();
+            updateForm.append("_id", updatedUser._id || "");
+            updateForm.append("bio[type]", userDetails.bio.type)
+            updateForm.append("bio[title]", updatedUser?.bio?.title || "");
+            updateForm.append("bio[email]", updatedUser?.bio?.email || "");
+            updateForm.append("bio[experience]", updatedUser?.bio?.experience || "");
+            updateForm.append("bio[education]", updatedUser?.bio?.education || "");
+            updateForm.append("bio[skills]", JSON.stringify(updatedUser?.bio?.skills || []));
+
+            const r = await editUserApi(updateForm, reqHeader)
+            console.log('editUserApi result:', r);
+
+            if (r && r.response) {
+                console.error('editUserApi error response:', r.response);
+            }
+
+            sessionStorage.setItem("resume", "done")
+
+            setTimeout(() => {
                 setResumeParsss(false)
-
-            },2500)
+            }, 2500)
 
 
         } catch (err) {
@@ -66,6 +86,7 @@ const ResumeScanner = ({setResumeParsss,setUserDetails,userDetails}) => {
         accept: { "application/pdf": [".pdf"] },
         multiple: false
     });
+
 
     return (
         <div className="max-w-xl mx-auto p-3 md:p-6 border border-blue-200 rounded-2xl my-5 bg-white">

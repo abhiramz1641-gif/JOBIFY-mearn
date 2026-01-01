@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import ProfileEdit from '../components/ProfileEdit'
 import { allApplicationsByUserMailApi, getUserApi, jobsApi } from '../../../services/allApis'
 import ResumeScanner from '../../../components/ResumeScanner'
+import { Toaster } from 'react-hot-toast'
 
 const UserDashboard = () => {
 
@@ -89,9 +90,13 @@ const UserDashboard = () => {
 
             //console.log(u);
 
-            if (u.bio.title == '' && u.bio.email == '' && u.bio.experience == '' && u.bio.education == '') {
+            const resumeee = sessionStorage.getItem("resume")
+
+            if (!resumeee && u.bio.title=="" && u.bio.email=="" ) {
                 setResumeParsss(true)
+                sessionStorage.setItem("resume", "done")
             }
+
         }
 
     }
@@ -182,6 +187,11 @@ const UserDashboard = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+            {/* hot toast */}
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
             {/* edit modal */}
             {edit &&
@@ -382,7 +392,7 @@ const UserDashboard = () => {
             {resumeParsss &&
                 <div id='modal' className='absolute inset-0  items-center flex justify-center '>
 
-                    <ResumeScanner userDetails={userDetails} setUserDetails={setUserDetails} setResumeParsss={setResumeParsss} />
+                    <ResumeScanner token={token} userDetails={userDetails} setUserDetails={setUserDetails} setResumeParsss={setResumeParsss} />
 
                 </div>
             }

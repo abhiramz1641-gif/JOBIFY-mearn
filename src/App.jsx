@@ -57,8 +57,6 @@ function App() {
         <Route path="/AdminDashboard" element={<AdminDashbord />} />
         
         
-        
-        
         <Route path="/resumeParse" element={<ResumeScanner />} />
 
 

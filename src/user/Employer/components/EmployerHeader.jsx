@@ -74,10 +74,10 @@ const EmployerHeader = ({ preview }) => {
     return (
         <div className='bg-linear-to-r from-[#334ed6] to-[#1E1E2F]'>
             {/* hot toast */}
-            <Toaster
+            {/* <Toaster
                 position="top-center"
                 reverseOrder={false}
-            />
+            /> */}
             <div className=' py-2 px-2 md:px-5 w-full grid grid-cols-2 md:grid-cols-3 items-center '>
                 <div className=' flex flex-col items-start'>
                     <img className=' h-16 md:h-20' src="./images/logo.png" alt="" />
