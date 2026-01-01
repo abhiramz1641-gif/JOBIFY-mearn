@@ -6,6 +6,7 @@ import JobFilter from '../components/JobFilter'
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from 'react-router-dom'
 import { getUserApi, jobsApi } from '../../../services/allApis'
+import { Toaster } from 'react-hot-toast'
 
 const JobSearch = () => {
 
@@ -229,7 +230,7 @@ const JobSearch = () => {
 
     };
 
-    const getUserData = async (mail,t) => {
+    const getUserData = async (mail, t) => {
 
         const mailId = {
             email: mail
@@ -241,7 +242,7 @@ const JobSearch = () => {
         }
 
 
-        const result = await getUserApi(mailId,reqHeader)
+        const result = await getUserApi(mailId, reqHeader)
 
         //console.log(result.data.existingUser);
 
@@ -321,7 +322,7 @@ const JobSearch = () => {
         getjobs(token)
         setToken(token)
         setEmail(mail)
-        getUserData(mail,token)
+        getUserData(mail, token)
 
         //handleFilter()
 
@@ -329,6 +330,11 @@ const JobSearch = () => {
 
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
+
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
             <UserHeader />
 

@@ -171,7 +171,7 @@ const JobView = () => {
             return;
         }
 
-        
+
         const formData = new FormData();
         formData.append("firstName", firstName);
         formData.append("lastName", lastName);
@@ -181,7 +181,7 @@ const JobView = () => {
         formData.append("userMail", userMail);
         formData.append("status", "pending");
         formData.append("score", score);
-        formData.append("resume", resume);   
+        formData.append("resume", resume);
 
         const result = await applyApplicationApi(formData);
 
@@ -234,6 +234,11 @@ const JobView = () => {
 
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
+
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
 
             <UserHeader />
@@ -421,11 +426,6 @@ const JobView = () => {
 
             </div>
 
-            {/* hot toast */}
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-            />
 
         </div>
     )

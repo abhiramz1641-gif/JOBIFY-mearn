@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import EmployerHeader from '../components/EmployerHeader';
 import { allApplicationsByJobIdApi, employerApplicationAcceptenceApi, employerApplicationRejectApi } from '../../../services/allApis';
 import { serverURL } from '../../../services/serverURL';
+import { Toaster } from 'react-hot-toast';
 
 
 const ViewApplication = () => {
@@ -85,6 +86,10 @@ const ViewApplication = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
             <EmployerHeader />
 

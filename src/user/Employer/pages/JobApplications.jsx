@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import EmployerHeader from '../components/EmployerHeader';
 import { allApplicationsApi, allApplicationsByJobIdApi, jobsByEmployerApi } from '../../../services/allApis';
+import { Toaster } from 'react-hot-toast';
 
 
 const JobApplications = () => {
@@ -48,11 +49,11 @@ const JobApplications = () => {
     }
     console.log(applications);
 
-    const handleCount=(id)=>{
+    const handleCount = (id) => {
 
-        const a=applications.filter(item=>item.jobId==id && item.status.includes("approved"))
+        const a = applications.filter(item => item.jobId == id && item.status.includes("approved"))
         //console.log(a);
-        
+
         return a.length
 
     }
@@ -71,6 +72,10 @@ const JobApplications = () => {
     return (
         <div className=' min-h-lvh bg-linear-to-r from-[#334ed6] to-[#1E1E2F] '>
 
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
 
             <EmployerHeader />
 
